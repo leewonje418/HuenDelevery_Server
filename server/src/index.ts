@@ -5,7 +5,7 @@ import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
 import routes from "./routes";
-import logger from "./lib/logger"
+import logger from "./lib/logger/console"
 import * as path from 'path'
 import * as dotenv from 'dotenv'
 
