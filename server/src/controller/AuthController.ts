@@ -8,8 +8,9 @@ import config from "../config/config";
 
 class AuthController {
     static login = async(req: Request, res: Response) => {
-        let { username, password } = req.body;
-        if(!(username && password)) {
+        let { id, password } = req.body;
+        console.log(req.body);
+        if(!(id && password)) {
             return res.status(400).json({
                 status : 400,
                 message: '잘못된 요청입니다.'
@@ -19,7 +20,7 @@ class AuthController {
         const userRepository = getRepository(User);
         let user: User;
         try {
-            user = await userRepository.findOneOrFail({ where : { username } });
+            user = await userRepository.findOneOrFail({ where : { id } });
             if(!user) {
                 return res.status(400).json({
                     status: 400,
@@ -36,7 +37,7 @@ class AuthController {
         if(!user.checkIfUnencryptedPasswordIsVaild(password)) {
             return res.status(401).json({
                 status: 401,
-                message: '암호화 오류 접근 권한 없음'
+                message: '접근 권한 없음'
             });
         }
 
