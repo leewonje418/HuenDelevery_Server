@@ -13,7 +13,7 @@ router.get(
   UserController.getOneById
 );
 
-router.post("/", [checkJwt, checkRole(["ADMIN"])], UserController.newUser);
+router.post("/", UserController.newUser);
 
 router.patch(
   "/:id([0-9]+)",
