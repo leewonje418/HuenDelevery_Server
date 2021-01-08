@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { validate } from "class-validator";
 
 import { User } from "../entity/User";
+import logger from "../lib/logger/console";
 
 class UserController {
     static listAll = async (req: Request, res: Response) => {
@@ -49,6 +50,7 @@ class UserController {
                 })
             }
         } catch (error) {
+            logger.red(error);
             return res.status(500).json({
                 status: 500,
                 message: "서버 오류"
@@ -57,8 +59,9 @@ class UserController {
     };
 
     static newUser = async (req: Request, res: Response) => {
-        let { username, password, role } = req.body;
+        let { id, username, password, role } = req.body;
         let user = new User();
+        user.id = id;
         user.username = username;
         user.password = password;
         user.role = role;
@@ -75,11 +78,23 @@ class UserController {
 
         const userRepository = getRepository(User);
         try {
+            const finduser = await userRepository.findOne({
+                where: {
+                    id,
+                }
+            })
+            if(finduser) {
+                return res.status(409).json({
+                    status: 409,
+                    message: "이 아이디는 이미 사용중인 아이디 입니다."
+                })
+            }
             await userRepository.save(user);
         } catch (error) {
-            return res.status(409).json({
-                status: 409,
-                message: "이 아이디는 이미 사용중인 아이디 입니다."
+            logger.red(error);
+            return res.status(500).json({
+                status: 500,
+                message: "회원가입 과정에서 오류가 발생했습니다."
             })
         }
 
