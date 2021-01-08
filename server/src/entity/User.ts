@@ -5,15 +5,15 @@ import {
     Unique,
     CreateDateColumn,
     UpdateDateColumn,
+    PrimaryColumn,
 } from "typeorm";
 import { Length, IsNotEmpty } from "class-validator"
 import * as bcrypt from "bcryptjs";
 
 @Entity()
-@Unique(["username"])
 export class User {
 
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     @Length(2, 20)
     id: string;
 
