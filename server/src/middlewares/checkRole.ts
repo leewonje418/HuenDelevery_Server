@@ -20,7 +20,7 @@ export const checkRole = (roles: Array<string>) => {
         if(roles.indexOf(user.role) > -1) {
             return res.state(200).json({
                 status: 200,
-                message: "권한 불러오기 성공~",
+                message: "역할 불러오기 성공~",
                 data: {
                     roles
                 }
