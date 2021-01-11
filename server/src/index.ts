@@ -4,12 +4,12 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as helmet from "helmet";
 import * as cors from "cors";
-import routes from "./routes";
+import api from "./api";
 import logger from "./lib/logger/console"
-import * as path from 'path'
-import * as dotenv from 'dotenv'
+import * as path from "path"
+import * as dotenv from "dotenv"
 
-dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config({ path: path.join(__dirname, "../.env") });
 
 const { PORT } = process.env;
 
@@ -19,7 +19,7 @@ createConnection()
     app.use(cors());
     app.use(helmet());
     app.use(bodyParser.json());
-    app.use("/", routes)
+    app.use("/", api)
     app.listen(PORT || 3000, () => {
       logger.green(`Server started on port ${PORT}!`);
     });

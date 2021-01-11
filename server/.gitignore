@@ -8,4 +8,3 @@ temp/
 ormconfig.json
 src/node_modules
 src/config
-yarn.lock

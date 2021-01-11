@@ -1,5 +1,5 @@
 import * as colors from "colors";
-import webLogger from './logger';
+import webLogger from "./logger";
 
 const red = (...str: string[]) => {
   str.forEach((e: string) => {
