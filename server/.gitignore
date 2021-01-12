@@ -8,3 +8,5 @@ temp/
 ormconfig.json
 src/node_modules
 src/config
+config
+logs
