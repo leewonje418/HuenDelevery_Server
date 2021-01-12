@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express"
 import { getRepository } from "typeorm";
 
-import { User } from "../entity/User";
+import { g5_member } from "../entity/g5_member";
 
 export const checkRole = (roles: Array<string>) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         const id = res.locals.jwtPayload.userId;
-        const userRepository = getRepository(User);
-        let user: User;
+        const userRepository = getRepository(g5_member);
+        let user: g5_member;
         try {
             user = await userRepository.findOneOrFail(id);
         } catch (id) {
@@ -17,7 +17,7 @@ export const checkRole = (roles: Array<string>) => {
             });
         }
 
-        if(roles.indexOf(user.role) > -1) {
+        if(user.mb_level != undefined) {
             return res.state(200).json({
                 status: 200,
                 message: "역할 불러오기 성공~",
