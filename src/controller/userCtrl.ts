@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
-import * as jwt from 'jsonwebtoken';
 import { validate } from 'class-validator';
-import config from '../config/config';
 import { loginValidate } from '../vaildate/loginValidate'
 import managerLogin from '../service/userService/managerLogin'
 import driverLogin from '../service/userService/driverLogin'
@@ -9,6 +7,8 @@ import { Member } from '../entity/member';
 import customerGetAll from '../service/userService/customerGetAll'
 import driverGetAll from '../service/userService/driverGetAll'
 import logger from '../lib/logger/console';
+import { createToken } from'../lib/token';
+import { manager } from'../lib/middleware/auth'
 
 export class UserCtrl {
      async managerLogin(req: Request, res: Response): Response {
@@ -24,11 +24,7 @@ export class UserCtrl {
         }
         try {
             await managerLogin(id, password);
-            const token = jwt.sign(
-                { userId: id, password: password },
-                config.jwtSecret,
-                { expiresIn: '60h' }
-            );
+            const token = await createToken(id);
             return res.status(200).json({
                 status: 200,
                 message: '로그인 성공~',
@@ -64,11 +60,7 @@ export class UserCtrl {
         }
         try {
             await driverLogin(id, password);
-            const token = jwt.sign(
-                { userId: id, password: password },
-                config.jwtSecret,
-                { expiresIn: '60h' }
-            );
+            const token = await createToken(id);
             return res.status(200).json({
                 status: 200,
                 message: '로그인 성공~',
@@ -94,6 +86,10 @@ export class UserCtrl {
     async customerGetAll(req: Request, res: Response): Response {
         try {
             const data: Member[] = await customerGetAll();
+            const managerCheck = await manager(req, res);
+            if(managerCheck !== 'success') {
+                return managerCheck;
+            }
             return res.status(200).json({
                 status: 200,
                 message: '고객 조회 성공~',
