@@ -8,7 +8,7 @@ import driverLogin from '../service/userService/driverLogin'
 import logger from '../lib/logger/console';
 
 export class UserCtrl {
-     async checkManager(req: Request, res: Response): Response {
+     async managerLogin(req: Request, res: Response): Response {
         const { id, password } = req.body;
         const LoginValidate: loginValidate = new loginValidate(id, password);
     
@@ -48,7 +48,7 @@ export class UserCtrl {
             }
         }
     }
-    async checkDriver(req: Request, res: Response): Response {
+    async driverLogin(req: Request, res: Response): Response {
         const { id, password } = req.body;
         const LoginValidate: loginValidate = new loginValidate(id, password);
     
@@ -88,4 +88,5 @@ export class UserCtrl {
             }
         }
     }
+    async customerGetAll(req: Request, res: Response): Response {
 }
