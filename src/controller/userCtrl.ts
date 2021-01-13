@@ -105,6 +105,10 @@ export class UserCtrl {
     async driverGetAll(req: Request, res: Response): Response {
         try {
             const data: Member[] = await driverGetAll();
+            const managerCheck = await manager(req, res);
+            if(managerCheck !== 'success') {
+                return managerCheck;
+            }
             return res.status(200).json({
                 status: 200,
                 message: '드라이버 조회 성공~',
