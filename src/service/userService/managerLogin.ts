@@ -1,6 +1,6 @@
 import userRepository from '../../repository/userRepository'
 
-export default async (id: string, password: string) => {
+export default async (id: string, password: string): Promise<string> => {
     let user;
     try {
         user = await userRepository.checkManager(id, password);
