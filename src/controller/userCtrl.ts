@@ -5,6 +5,9 @@ import config from '../config/config';
 import { loginValidate } from '../vaildate/loginValidate'
 import managerLogin from '../service/userService/managerLogin'
 import driverLogin from '../service/userService/driverLogin'
+import { Member } from '../entity/member';
+import customerGetAll from '../service/userService/customerGetAll'
+import driverGetAll from '../service/userService/driverGetAll'
 import logger from '../lib/logger/console';
 
 export class UserCtrl {
@@ -89,4 +92,33 @@ export class UserCtrl {
         }
     }
     async customerGetAll(req: Request, res: Response): Response {
+        try {
+            const data: Member[] = await customerGetAll();
+            return res.status(200).json({
+                status: 200,
+                message: '고객 조회 성공~',
+                data
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: '고객 조회 오류입니다.'
+            });
+        }
+    }
+    async driverGetAll(req: Request, res: Response): Response {
+        try {
+            const data: Member[] = await driverGetAll();
+            return res.status(200).json({
+                status: 200,
+                message: '드라이버 조회 성공~',
+                data
+            });
+        } catch (error) {
+            return res.status(500).json({
+                status: 500,
+                message: '드라이버 조회 오류입니다.'
+            });
+        }
+    }
 }
