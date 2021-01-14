@@ -11,12 +11,12 @@ export default class AuthController {
     this.userService = new UserService();
   }
 
-  async managerLogin(req: Request, res: Response) {
+  managerLogin = async (req: Request, res: Response) => {
     try {
       const loginRequest = new LoginRequest(req.body);
       await loginRequest.validate();
 
-      const token = this.userService.login(Role.MANAGER, loginRequest);
+      const token = await this.userService.login(Role.MANAGER, loginRequest);
 
       res.status(200).json({
         message: '로그인 성공',
@@ -29,12 +29,13 @@ export default class AuthController {
     }
   }
 
-  async driverLogin(req: Request, res: Response) {
+  driverLogin = async (req: Request, res: Response) => {
     try {
       const loginRequest = new LoginRequest(req.body);
+
       await loginRequest.validate();
 
-      const token = this.userService.login(Role.DRIVER, loginRequest);
+      const token = await this.userService.login(Role.DRIVER, loginRequest);
 
       res.status(200).json({
         message: '로그인 성공',

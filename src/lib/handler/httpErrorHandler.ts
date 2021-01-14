@@ -3,7 +3,9 @@ import HttpError from '../../error/httpError';
 import logger from '../logger/logger';
 
 export default (res: Response, err: HttpError | Error) => {
-  logger.error(err.message);
+  console.log(err);
+
+  logger.error(err);
 
   if (err instanceof HttpError) {
     res.status(err.code).json({

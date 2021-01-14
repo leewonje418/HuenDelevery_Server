@@ -24,7 +24,8 @@ export default class User {
     id!: string;
 
     @Column({
-        name: 'mb_password'
+        name: 'mb_password',
+        select: false,
     })
     @IsNotEmpty()
     password!: string;

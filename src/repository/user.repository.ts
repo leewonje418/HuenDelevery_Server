@@ -1,12 +1,11 @@
-import { getRepository, Repository } from 'typeorm';
+import { EntityRepository, getCustomRepository, getRepository, Repository } from 'typeorm';
 import User from '../entity/user';
 import Role from '../enum/Role';
 
+@EntityRepository(User)
 export default class UserRepository extends Repository<User> {
-    async findByIdAndPassword(id: string, password: string): Promise<User | undefined> {
-        const repository = getRepository(User);
-
-        return repository.findOne({
+    findByIdAndPassword = async (id: string, password: string): Promise<User | undefined> => {
+        return this.findOne({
             where: {
                 id,
                 password,
@@ -14,10 +13,8 @@ export default class UserRepository extends Repository<User> {
         });
     }
 
-    async findByRole(role: Role): Promise<User[]> {
-        const repository = getRepository(User);
-
-        return repository.find({
+    findByRole = async (role: Role): Promise<User[]> => {
+        return this.find({
             where: {
                 role,
             },

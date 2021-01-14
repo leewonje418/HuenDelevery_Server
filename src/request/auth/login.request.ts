@@ -11,8 +11,9 @@ export default class LoginRequest {
     this.password = body.password;
   }
 
-  async validate() {
+  async validate(): Promise<void> {
     const errors = await validate(this);
+
     if (errors.length > 0) {
       throw new HttpError(400, '검증 오류');
     }
