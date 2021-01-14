@@ -1,13 +1,14 @@
 import { Router } from 'express';
 import { UserCtrl } from '../../controller/userCtrl';
+import authMiddleware from '../../lib/middleware/auth';
 
 const router: Router = Router();
 
-const userctrl = new UserCtrl;
+const userCtrl = new UserCtrl;
 
-router.post('/login/manager', userctrl.managerLogin);
-router.post('/login/driver', userctrl.driverLogin);
-router.get('/check/customer', userctrl.customerGetAll);
-router.get('/check/driver', userctrl.driverGetAll);
+router.post('/login/manager', userCtrl.managerLogin);
+router.post('/login/driver', userCtrl.driverLogin);
+router.get('/check/customer', authMiddleware.managerAuth, userCtrl.getAllCustomers);
+router.get('/check/driver', authMiddleware.managerAuth, userCtrl.getAllDrivers);
 
 export default router;
