@@ -8,7 +8,7 @@ const userCtrl = new UserCtrl;
 
 router.post('/login/manager', userCtrl.managerLogin);
 router.post('/login/driver', userCtrl.driverLogin);
-router.get('/check/customer', authMiddleware.managerAuth, userCtrl.getAllCustomers);
-router.get('/check/driver', authMiddleware.managerAuth, userCtrl.getAllDrivers);
+router.get('/customers', authMiddleware.managerAuth, userCtrl.getAllCustomers);
+router.get('/drivers', authMiddleware.managerAuth, userCtrl.getAllDrivers);
 
 export default router;
