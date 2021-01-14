@@ -1,8 +1,8 @@
-import { Member } from './member';
+import User from './user';
 import { Delivery } from './delivery';
 
 const entities = [
-  Member,
+  User,
   Delivery
 ];
 

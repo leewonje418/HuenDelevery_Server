@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
 import { verifyToken } from '../token';
 import { getRepository } from 'typeorm';
-import { Member } from '../../entity/member';
+import { Member } from '../../entity/user';
 import logger from '../logger';
 import Role from '../../enum/Role'
 

@@ -1,22 +1,19 @@
 import {
     Entity,
-    PrimaryGeneratedColumn, 
+    PrimaryGeneratedColumn,
     Column,
-    Unique,
-    CreateDateColumn,
-    UpdateDateColumn,
-    PrimaryColumn,
     BaseEntity,
-} from'typeorm';
+} from 'typeorm';
 import { Length, IsNotEmpty } from 'class-validator'
+import Role from '../enum/Role';
 
 @Entity('g5_member')
-export class Member extends BaseEntity {
+export default class User {
     @Column({
         name: 'mb_no'
     })
     @PrimaryGeneratedColumn()
-    idx: number;
+    idx!: number;
 
     @Column({
         name: 'mb_id',
@@ -24,28 +21,28 @@ export class Member extends BaseEntity {
     })
     @IsNotEmpty()
     @Length(2, 20)
-    id: string;
+    id!: string;
 
     @Column({
         name: 'mb_password'
     })
     @IsNotEmpty()
-    password: string;
+    password!: string;
 
     @Column({
         name: 'mb_name'
     })
     @IsNotEmpty()
-    name: string;
+    name!: string;
 
     @Column({
         name: 'mb_add2'
     })
-    address: string;
+    address!: string;
 
     @Column({
         name: 'mb_level'
     })
     @Length(1, 10)
-    role: number;
+    role!: Role;
 }

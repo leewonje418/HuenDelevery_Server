@@ -1,16 +1,15 @@
 import { Request, Response } from 'express';
 import { validate } from 'class-validator';
-import { LoginValidate } from '../vaildate/loginValidate'
+import { LoginValidate } from '../request/loginValidate'
 import managerLogin from '../service/userService/managerLogin'
 import driverLogin from '../service/userService/driverLogin'
-import { Member } from '../entity/member';
+import { Member } from '../entity/user';
 import getAllCustomers from '../service/userService/getAllCustomers'
 import getAllDrivers from '../service/userService/getAllDrivers'
 import logger from '../lib/logger';
 import { createToken } from '../lib/token';
-import { HttpError } from '../error/httpError'
 
-export class UserCtrl {
+export default class UserController {
     async managerLogin(req: Request, res: Response): Response {
         const { id, password } = req.body;
         const loginValidate: LoginValidate = new LoginValidate(id, password);

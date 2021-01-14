@@ -1,6 +1,6 @@
-import { Member } from '../../entity/member';
+import { Member } from '../../entity/user';
 import { getRepository } from 'typeorm';
-import Role from'../../enum/Role'
+import Role from '../../enum/Role'
 
 export default async (): Promise<Member[]> => {
     const role: Role = Role.CUSTOMER;

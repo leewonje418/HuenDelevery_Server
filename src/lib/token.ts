@@ -1,20 +1,20 @@
-import 'dotenv/config';
 import { SignOptions } from 'jsonwebtoken'
 import * as jwt from 'jsonwebtoken'
+import { JWT } from '../../config/config';
 
 const { JWT_SECRET } = process.env;
 
-export const createToken = async (id: string): Promise<string> => {
+export const createToken = async (idx: number): Promise<string> => {
   const payload = {
-    id,
+    idx,
   };
 
   const options: SignOptions = {
     issuer: 'Huensystem',
-    expiresIn: '5d',
+    expiresIn: JWT.EXPIRES_IN,
   }
 
-  return jwt.sign(payload, JWT_SECRET, options);
+  return jwt.sign(payload, JWT.SECRET, options);
 }
 
-export const verifyToken = async (token: string): Promise<any> =>  await jwt.verify(token, JWT_SECRET);
+export const verifyToken = async (token: string): Promise<any> => await jwt.verify(token, JWT.SECRET);

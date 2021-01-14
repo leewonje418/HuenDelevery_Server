@@ -1,31 +1,19 @@
-import { Member } from '../entity/member';
-import { getRepository } from 'typeorm';
-import Role from'../enum/Role'
+import { getRepository, Repository } from 'typeorm';
+import User from '../entity/user';
 
 export default class UserRepository {
-    async checkManager(id: string, password: string): Promise<Member> {
-        const role: Role = Role.MANAGER;
-        const returnMember: Member = await getRepository(Member).findOne({
-            where: {
-                id,
-                password,
-                role
-            }
-        });
-        return returnMember;
+    private readonly repository: Repository<User>
+
+    constructor() {
+        this.repository = getRepository(User);
     }
-    async checkDriver(id: string, password: string): Promise<Member> {
-        const role: Role = Role.DRIVER;
-        const returnMember: Member = await getRepository(Member).findOne({
+
+    async findByIdAndPassword(id: string, password: string): Promise<User | undefined> {
+        return this.repository.findOne({
             where: {
                 id,
                 password,
-                role
-            }
+            },
         });
-        return returnMember;
     }
 }
-
-// let UserRepo = new UserRepository();
-// export default UserRepo;
