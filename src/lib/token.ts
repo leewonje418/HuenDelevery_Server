@@ -17,4 +17,4 @@ export const createToken = async (id: string): Promise<string> => {
   return jwt.sign(payload, JWT_SECRET, options);
 }
 
-export const verifyToken = async (token: string): Promise<any> => { await jwt.verify(token, JWT_SECRET); };
+export const verifyToken = async (token: string): Promise<any> =>  await jwt.verify(token, JWT_SECRET);
