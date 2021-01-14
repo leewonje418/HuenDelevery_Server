@@ -17,11 +17,11 @@ export class Delivery {
     idx!: number;
 
     @ManyToOne(type => User, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'fk_customer_id' })
-    customerIdx!: number | null;
+    @JoinColumn({ name: 'fk_customer_idx' })
+    customerIdx!: number;
 
     @ManyToOne(type => User, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'fk_driver_id' })
+    @JoinColumn({ name: 'fk_driver_idx' })
     driverIdx!: number | null;
 
     @Column({
