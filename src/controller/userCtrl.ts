@@ -6,15 +6,15 @@ import driverLogin from '../service/userService/driverLogin'
 import { Member } from '../entity/member';
 import getAllCustomers from '../service/userService/getAllCustomers'
 import getAllDrivers from '../service/userService/getAllDrivers'
-import logger from '../lib/logger/console';
-import { createToken } from'../lib/token';
+import logger from '../lib/logger';
+import { createToken } from '../lib/token';
 import { HttpError } from '../error/httpError'
 
 export class UserCtrl {
-     async managerLogin(req: Request, res: Response): Response {
+    async managerLogin(req: Request, res: Response): Response {
         const { id, password } = req.body;
         const loginValidate: LoginValidate = new LoginValidate(id, password);
-    
+
         const errors = await validate(loginValidate);
         if (errors.length > 0) {
             return res.status(400).json({
@@ -26,14 +26,14 @@ export class UserCtrl {
             const token = await createToken(id);
             return res.status(200).json({
                 message: '로그인 성공~',
-                data : {
+                data: {
                     token
                 }
             })
         } catch (error) {
             console.error(error);
-            if(error instanceof HttpError) {
-                if(error.message == 'Error: 아이디 비밀번호 맞지 않음!') {
+            if (error instanceof HttpError) {
+                if (error.message == 'Error: 아이디 비밀번호 맞지 않음!') {
                     return res.status(401).json({
                         message: '아이디 혹은 비밀번호를 잘못입력하셨습니다.'
                     });
@@ -49,7 +49,7 @@ export class UserCtrl {
     async driverLogin(req: Request, res: Response): Response {
         const { id, password } = req.body;
         const loginValidate: LoginValidate = new LoginValidate(id, password);
-    
+
         const errors = await validate(loginValidate);
         if (errors.length > 0) {
             return res.status(400).json({
@@ -62,12 +62,12 @@ export class UserCtrl {
             return res.status(200).json({
                 message: '로그인 성공~',
                 data: {
-                    'x-access-token' : token,
+                    'x-access-token': token,
                 }
             });
         } catch (error) {
-            if(error instanceof HttpError) {
-                if(error.message == 'Error: 아이디 비밀번호 맞지 않음!') {
+            if (error instanceof HttpError) {
+                if (error.message == 'Error: 아이디 비밀번호 맞지 않음!') {
                     return res.status(401).json({
                         message: '아이디 혹은 비밀번호를 잘못입력하셨습니다.'
                     });

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import * as http from 'http';
 import app from './app';
 import * as database from './orm';
-import logger from './lib/logger/console';
+import logger from './lib/logger';
 
 
 const { PORT } = process.env;
