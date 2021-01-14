@@ -54,7 +54,7 @@ const validateAuth = async (req) => {
       },
     });
   
-    if (!member) {
+    if (member === undefined) {
       throw new Error('NO_USER');
     }
 
