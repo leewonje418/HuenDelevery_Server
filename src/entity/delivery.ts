@@ -34,7 +34,7 @@ export class Delivery {
     @Column({
         name: 'wr_2'
     })
-    distance: "decimal";
+    distance: 'decimal';
 
     @Column({
         name: 'wr_3'
