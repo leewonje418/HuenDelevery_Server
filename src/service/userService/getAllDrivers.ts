@@ -1,9 +1,9 @@
 import { Member } from '../../entity/member';
 import { getRepository } from 'typeorm';
-import ERole from'../../enum/eRole'
+import Role from'../../enum/Role'
 
 export default async (): Promise<Member[]> => {
-    const role: ERole = ERole.DRIVER;
+    const role: Role = Role.DRIVER;
     let returnMember: Member[]
     try {
         returnMember = await getRepository(Member).find({
