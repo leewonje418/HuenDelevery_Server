@@ -2,7 +2,7 @@ import { Member } from '../entity/member';
 import { getRepository } from 'typeorm';
 import Role from'../enum/Role'
 
-class UserRepository {
+export default class UserRepository {
     async checkManager(id: string, password: string): Promise<Member> {
         const role: Role = Role.MANAGER;
         const returnMember: Member = await getRepository(Member).findOne({
@@ -27,5 +27,5 @@ class UserRepository {
     }
 }
 
-let UserRepo = new UserRepository();
-export default UserRepo;
+// let UserRepo = new UserRepository();
+// export default UserRepo;
