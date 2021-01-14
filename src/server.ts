@@ -1,16 +1,14 @@
-import '../config/env'
+import 'dotenv/config';
 import * as http from 'http';
 import app from './app';
 import * as database from './orm';
-import logger from './lib/logger/console';
-
-
-const { PORT } = process.env;
+import logger from './lib/logger';
+import { PORT } from '../config/config';
 
 database.getConnection();
 
 const server = http.createServer(app);
 
-server.listen(PORT || 8080, () => {
+server.listen(PORT, () => {
   logger.success(`Server is listening to ${PORT}`);
 });
