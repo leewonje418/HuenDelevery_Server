@@ -9,8 +9,8 @@ const { PORT } = process.env;
 
 database.getConnection();
 
-const startServer = http.createServer(app);
+const server = http.createServer(app);
 
-startServer.listen(PORT || 8080, () => {
+server.listen(PORT || 8080, () => {
   logger.success(`Server is listening to ${PORT}`);
 });
