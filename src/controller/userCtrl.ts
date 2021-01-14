@@ -8,7 +8,7 @@ import getAllCustomers from '../service/userService/getAllCustomers'
 import getAllDrivers from '../service/userService/getAllDrivers'
 import logger from '../lib/logger/console';
 import { createToken } from'../lib/token';
-import HttpError from '../error/httpError'
+import { HttpError } from '../error/httpError'
 
 export class UserCtrl {
      async managerLogin(req: Request, res: Response): Response {
@@ -31,6 +31,7 @@ export class UserCtrl {
                 }
             })
         } catch (error) {
+            console.error(error);
             if(error instanceof HttpError) {
                 if(error.message == 'Error: 아이디 비밀번호 맞지 않음!') {
                     return res.status(401).json({
