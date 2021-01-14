@@ -19,7 +19,8 @@ export class Member extends BaseEntity {
     idx: number;
 
     @Column({
-        name: 'mb_id'
+        name: 'mb_id',
+        unique: true
     })
     @IsNotEmpty()
     @Length(2, 20)
@@ -29,7 +30,6 @@ export class Member extends BaseEntity {
         name: 'mb_password'
     })
     @IsNotEmpty()
-    @Length(4, 255)
     password: string;
 
     @Column({
