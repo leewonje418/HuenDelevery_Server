@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Length, IsNotEmpty } from 'class-validator'
 import { Member } from './member';
+import { type } from 'os';
 
 @Entity('g5_write_delivery')
 export class Delivery {
@@ -32,9 +33,10 @@ export class Delivery {
     name: string;
 
     @Column({
-        name: 'wr_2'
+        name: 'wr_2',
+        type: 'decimal'
     })
-    distance: 'decimal';
+    distance;
 
     @Column({
         name: 'wr_3'
