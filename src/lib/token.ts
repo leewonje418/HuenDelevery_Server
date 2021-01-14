@@ -10,7 +10,7 @@ export const createToken = async (id: string): Promise<string> => {
   };
 
   const options: SignOptions = {
-    issuer: 'Leewonje',
+    issuer: 'Huensystem',
     expiresIn: '5d',
   }
 
