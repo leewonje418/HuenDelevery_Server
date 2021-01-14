@@ -1,8 +1,7 @@
-import { Length } from "class-validator";
-export class loginValidate {
+import { Length } from 'class-validator';
+export class LoginValidate {
     @Length(2, 20)
-    private id: string; 
-    @Length(4, 255)       
+    private id: string;       
     private password: string;
     
     constructor(id: string, password: string) {
