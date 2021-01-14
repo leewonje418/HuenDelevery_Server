@@ -1,5 +1,6 @@
-import User from "../entity/user";
+import { Request, Response } from "express";
 import { IDriver } from "../interface/user.interface";
+import httpErrorHandler from "../lib/handler/httpErrorHandler";
 import UserService from "../service/user.service";
 
 export default class UserController {
@@ -9,15 +10,33 @@ export default class UserController {
         this.userService = new UserService();
     }
 
-    async getCustomers(): Promise<User[]> {
-        const customers = await this.userService.getCustomers();
+    async getCustomers(req: Request, res: Response) {
+        try {
+            const customers = await this.userService.getCustomers();
 
-        return customers;
+            res.status(200).json({
+                message: '고객 전체 조회 성공',
+                data: {
+                    customers,
+                },
+            });
+        } catch (err) {
+            httpErrorHandler(res, err);
+        }
     }
 
-    async getDrivers(): Promise<IDriver[]> {
-        const drivers = await this.userService.getDrivers();
+    async getDrivers(req: Request, res: Response) {
+        try {
+            const drivers = await this.userService.getDrivers();
 
-        return drivers;
+            res.status(200).json({
+                message: '기사 전체 조회 성공',
+                data: {
+                    drivers,
+                },
+            });
+        } catch (err) {
+            httpErrorHandler(res, err);
+        }
     }
 }
