@@ -1,10 +1,10 @@
 import { Member } from '../entity/member';
 import { getRepository } from 'typeorm';
-import ERole from'../enum/eRole'
+import Role from'../enum/Role'
 
 class UserRepository {
     async checkManager(id: string, password: string): Promise<Member> {
-        const role: ERole = ERole.MANAGER;
+        const role: Role = Role.MANAGER;
         const returnMember: Member = await getRepository(Member).findOne({
             where: {
                 id,
@@ -15,7 +15,7 @@ class UserRepository {
         return returnMember;
     }
     async checkDriver(id: string, password: string): Promise<Member> {
-        const role: ERole = ERole.DRIVER;
+        const role: Role = Role.DRIVER;
         const returnMember: Member = await getRepository(Member).findOne({
             where: {
                 id,
