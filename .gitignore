@@ -7,5 +7,5 @@ temp/
 .env
 ormconfig.json
 src/node_modules
-src/config
-yarn.lock
+config
+logs
