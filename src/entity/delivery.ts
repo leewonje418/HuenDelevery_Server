@@ -40,6 +40,7 @@ export class Delivery {
     @Column({
         name: 'wr_3',
         nullable: true,
+        type: 'varchar',
     })
     startAddress!: string | null;
 }

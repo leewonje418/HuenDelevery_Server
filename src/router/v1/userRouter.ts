@@ -6,9 +6,7 @@ const router: Router = Router();
 
 const userController = new UserController();
 
-router.post('/login/manager', userController.managerLogin);
-// router.post('/login/driver', userCtrl.driverLogin);
-// router.get('/customers', authMiddleware.managerAuth, userCtrl.getAllCustomers);
-// router.get('/drivers', authMiddleware.managerAuth, userCtrl.getAllDrivers);
+router.get('/customer', authMiddleware.managerAuth, userController.getCustomers);
+router.get('/driver', authMiddleware.managerAuth, userController.getDrivers);
 
 export default router;

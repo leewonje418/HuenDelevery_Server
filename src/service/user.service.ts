@@ -1,7 +1,9 @@
+import User from "../entity/user";
 import Role from "../enum/Role";
 import HttpError from "../error/httpError";
+import { IDriver } from "../interface/user.interface";
 import { createToken } from "../lib/token";
-import UserRepository from "../repository/userRepository";
+import UserRepository from "../repository/user.repository";
 import LoginRequest from "../request/auth/login.request";
 
 export default class UserService {
@@ -26,5 +28,18 @@ export default class UserService {
     const token: string = await createToken(user.idx);
 
     return token;
+  }
+
+  async getCustomers(): Promise<User[]> {
+    const customers = await this.userRepository.findByRole(Role.CUSTOMER);
+
+    return customers;
+  }
+
+  async getDrivers(): Promise<IDriver[]> {
+    const drivers = await this.userRepository.findByRole(Role.DRIVER);
+    // TODO: 드라이버 배송 정보 추가
+
+    return drivers as IDriver[];
   }
 }

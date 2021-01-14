@@ -28,5 +28,6 @@ export const getConnection = async (): Promise<Connection> => {
     return connection;
   } catch (err) {
     logger.error('[DB] Connection Error', err.message);
+    throw err;
   }
 };
