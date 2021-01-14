@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import Role from "../enum/Role";
-import httpErrorHandler from "../lib/handler/httpErrorHandler";
-import LoginRequest from "../request/auth/login.request";
-import UserService from "../service/user.service";
+import { Request, Response } from 'express';
+import Role from '../enum/Role';
+import httpErrorHandler from '../lib/handler/httpErrorHandler';
+import LoginRequest from '../request/auth/login.request';
+import UserService from '../service/user.service';
 
 export default class AuthController {
   private readonly userService: UserService;

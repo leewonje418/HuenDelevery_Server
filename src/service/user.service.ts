@@ -1,12 +1,12 @@
-import { getCustomRepository } from "typeorm";
-import User from "../entity/user";
-import Role from "../enum/Role";
-import HttpError from "../error/httpError";
-import { IDriver } from "../interface/user.interface";
-import { createToken } from "../lib/token";
-import userRepository from "../repository/user.repository";
-import UserRepository from "../repository/user.repository";
-import LoginRequest from "../request/auth/login.request";
+import { getCustomRepository } from 'typeorm';
+import User from '../entity/user';
+import Role from '../enum/Role';
+import HttpError from '../error/httpError';
+import { IDriver } from '../interface/user.interface';
+import { createToken } from '../lib/token';
+import userRepository from '../repository/user.repository';
+import UserRepository from '../repository/user.repository';
+import LoginRequest from '../request/auth/login.request';
 
 export default class UserService {
   login = async (role: Role, loginRequest: LoginRequest): Promise<string> => {

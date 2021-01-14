@@ -1,5 +1,5 @@
-import { Length, validate } from "class-validator";
-import HttpError from "../../error/httpError";
+import { Length, validate } from 'class-validator';
+import HttpError from '../../error/httpError';
 
 export default class LoginRequest {
   @Length(2, 20)

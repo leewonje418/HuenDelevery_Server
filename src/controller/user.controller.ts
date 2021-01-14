@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import httpErrorHandler from "../lib/handler/httpErrorHandler";
-import UserService from "../service/user.service";
+import { Request, Response } from 'express';
+import httpErrorHandler from '../lib/handler/httpErrorHandler';
+import UserService from '../service/user.service';
 
 export default class UserController {
     private readonly userService: UserService;

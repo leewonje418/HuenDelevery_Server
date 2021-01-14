@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express"
-import User from "../../entity/user";
-import Role from "../../enum/Role";
-import HttpError from "../../error/httpError";
-import UserService from "../../service/user.service";
-import IAuthRequest from "../../interface/request.interface";
-import httpErrorHandler from "../handler/httpErrorHandler";
-import { verifyToken } from "../token";
+import { NextFunction, Request, Response } from 'express'
+import User from '../../entity/user';
+import Role from '../../enum/Role';
+import HttpError from '../../error/httpError';
+import UserService from '../../service/user.service';
+import IAuthRequest from '../../interface/request.interface';
+import httpErrorHandler from '../handler/httpErrorHandler';
+import { verifyToken } from '../token';
 
 export const authManager = async (req: any, res: Response, next: NextFunction) => {
   const user = await validateToken(req, res);
