@@ -1,5 +1,5 @@
 import * as Winston from 'winston';
-import * as WinstonDaily from 'winston-daily-rotate-file';
+import WinstonDaily from 'winston-daily-rotate-file';
 
 export default Winston.createLogger({
   level: 'info',
