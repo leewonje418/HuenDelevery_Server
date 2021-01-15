@@ -43,4 +43,18 @@ export class Delivery {
         type: 'varchar',
     })
     startAddress!: string | null;
+
+    @Column({ 
+        name: 'wr_4',
+        nullable: true,
+        type: 'datetime'
+    })
+    startTime!: Date;
+
+    @Column({ 
+        name: 'wr_5', 
+        nullable: true,
+        type: 'datetime'
+    })
+    endTime!: Date;
 }
