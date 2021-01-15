@@ -58,7 +58,7 @@ export default class DriverEventHandler {
         });
       }
     } catch (err) {
-      socketErrorHandler(socket, err);
+      socketErrorHandler(DriverEvent.SEND_DRIVER_LOCATION, socket, err);
     }
   }
 }

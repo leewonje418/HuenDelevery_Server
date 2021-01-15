@@ -1,8 +1,8 @@
 import { Socket } from 'socket.io';
 import SocketError from '../../error/socketError';
-import SocketEvent from '../../socket/socketEvent';
+import DriverEvent from '../../socket/driver/driverEvent';
 
-export default (socket: Socket, err: SocketError | Error) => {
+export default (driverEvent: DriverEvent, socket: Socket, err: SocketError | Error) => {
   let code = 500;
   let message = '소켓 오류 발생';
 
@@ -11,7 +11,7 @@ export default (socket: Socket, err: SocketError | Error) => {
     message = err.message;
   }
 
-  socket.emit(SocketEvent.SOCKET_ERROR, {
+  socket.emit(driverEvent, {
     status: code,
     message: message,
   });
