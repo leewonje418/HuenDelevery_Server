@@ -1,4 +1,4 @@
-import colors from 'colors';
+import * as colors from 'colors';
 import webLogger from './logger';
 
 const error = (...str: string[]) => {
