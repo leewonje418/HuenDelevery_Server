@@ -3,7 +3,7 @@ import User from '../../entity/user';
 import Role from '../../enum/Role';
 import HttpError from '../../error/httpError';
 import UserService from '../../service/user.service';
-import IAuthRequest from '../../interface/request.interface';
+import { IAuthRequest } from '../../interface/request.interface';
 import httpErrorHandler from '../handler/httpErrorHandler';
 import { verifyToken } from '../token';
 

@@ -47,4 +47,11 @@ export default class UserService {
 
     return drivers as IDriver[];
   }
+
+  getManagers = async (): Promise<User[]> => {
+    const userRepository = getCustomRepository(UserRepository);
+    const managers = await userRepository.findByRole(Role.MANAGER);
+
+    return managers;
+  }
 }
