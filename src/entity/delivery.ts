@@ -1,14 +1,12 @@
 import {
     Entity,
-    PrimaryGeneratedColumn, 
+    PrimaryGeneratedColumn,
     Column,
     ManyToOne,
     JoinColumn,
-    createQueryBuilder
 } from 'typeorm';
-import { Length, IsNotEmpty } from 'class-validator'
-import { Member } from './member';
-import { type } from 'os';
+import { IsNotEmpty } from 'class-validator'
+import User from './user';
 
 @Entity('g5_write_delivery')
 export class Delivery {
@@ -16,30 +14,33 @@ export class Delivery {
         name: 'wr_id'
     })
     @PrimaryGeneratedColumn()
-    idx: number;
+    idx!: number;
 
-    @ManyToOne(type => Member, { onDelete: 'CASCADE' })
-    @JoinColumn({ name: 'fk_customer_id' })
-    customer_id: number;
+    @ManyToOne(type => User, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'fk_customer_idx' })
+    customerIdx!: number;
 
-    @ManyToOne(type => Member, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'fk_driver_id' })
-    driver_id: number;
+    @ManyToOne(type => User, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'fk_driver_idx' })
+    driverIdx!: number | null;
 
     @Column({
-        name: 'wr_1'
+        name: 'wr_1',
     })
     @IsNotEmpty()
-    name: string;
+    productName!: string;
 
     @Column({
         name: 'wr_2',
-        type: 'decimal'
+        type: 'decimal',
+        nullable: true,
     })
-    distance;
+    distance!: number | null;
 
     @Column({
-        name: 'wr_3'
+        name: 'wr_3',
+        nullable: true,
+        type: 'varchar',
     })
-    start_address: string;
+    startAddress!: string | null;
 }
