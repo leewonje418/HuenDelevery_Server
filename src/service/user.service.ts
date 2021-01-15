@@ -4,7 +4,6 @@ import Role from '../enum/Role';
 import HttpError from '../error/httpError';
 import { IDriver } from '../interface/user.interface';
 import { createToken } from '../lib/token';
-import userRepository from '../repository/user.repository';
 import UserRepository from '../repository/user.repository';
 import LoginRequest from '../request/auth/login.request';
 
@@ -47,5 +46,12 @@ export default class UserService {
     // TODO: 드라이버 배송 정보 추가
 
     return drivers as IDriver[];
+  }
+
+  getManagers = async (): Promise<User[]> => {
+    const userRepository = getCustomRepository(UserRepository);
+    const managers = await userRepository.findByRole(Role.MANAGER);
+
+    return managers;
   }
 }
