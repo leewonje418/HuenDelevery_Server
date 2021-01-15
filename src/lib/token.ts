@@ -2,8 +2,6 @@ import { SignOptions } from 'jsonwebtoken'
 import * as jwt from 'jsonwebtoken'
 import { JWT } from '../../config/config';
 
-const { JWT_SECRET } = process.env;
-
 export const createToken = async (idx: number): Promise<string> => {
   const payload = {
     idx,
