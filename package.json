@@ -27,11 +27,11 @@
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.10",
       "routing-controllers": "^0.9.0-alpha.6",
+      "socket.io": "^2.3.0",
       "ts-node-dev": "^1.1.1",
       "typeorm": "0.2.29",
       "winston": "^3.3.3",
-      "winston-daily-rotate-file": "^4.5.0",
-      "socket.io": "^2.3.0"
+      "winston-daily-rotate-file": "^4.5.0"
    },
    "scripts": {
       "start": "ts-node src/server.ts"
