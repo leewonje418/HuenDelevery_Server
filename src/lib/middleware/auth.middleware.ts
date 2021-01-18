@@ -3,11 +3,10 @@ import User from '../../entity/user';
 import Role from '../../enum/Role';
 import HttpError from '../../error/httpError';
 import UserService from '../../service/user.service';
-import { IAuthRequest } from '../../interface/request.interface';
 import httpErrorHandler from '../handler/httpErrorHandler';
 import { verifyToken } from '../token';
 
-export const authManager = async (req: any, res: Response, next: NextFunction) => {
+export const authManager = async (req: Request, res: Response, next: NextFunction) => {
   const user = await validateToken(req, res);
   if (user === undefined) {
     return;
@@ -25,7 +24,7 @@ export const authManager = async (req: any, res: Response, next: NextFunction) =
   next();
 }
 
-export const authDriver = async (req: IAuthRequest, res: Response, next: NextFunction) => {
+export const authDriver = async (req: Request, res: Response, next: NextFunction) => {
   const user = await validateToken(req, res);
   if (user === undefined) {
     return;

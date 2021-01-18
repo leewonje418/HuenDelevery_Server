@@ -4,6 +4,7 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
+    RelationId,
 } from 'typeorm';
 import { IsNotEmpty } from 'class-validator'
 import User from './user';
@@ -16,13 +17,19 @@ export class Delivery {
     @PrimaryGeneratedColumn()
     idx!: number;
 
+    @RelationId((delivery: Delivery) => delivery.customer)
+    customerIdx!: number;
+
     @ManyToOne(type => User, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'fk_customer_idx' })
-    customerIdx!: number;
+    customer!: User;
+
+    @RelationId((delivery: Delivery) => delivery.driver)
+    driverIdx!: number | null;
 
     @ManyToOne(type => User, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'fk_driver_idx' })
-    driverIdx!: number | null;
+    driver!: User | null;
 
     @Column({
         name: 'wr_1',
@@ -44,15 +51,15 @@ export class Delivery {
     })
     startAddress!: string | null;
 
-    @Column({ 
+    @Column({
         name: 'wr_4',
         nullable: true,
         type: 'datetime'
     })
     startTime!: Date;
 
-    @Column({ 
-        name: 'wr_5', 
+    @Column({
+        name: 'wr_5',
         nullable: true,
         type: 'datetime'
     })
