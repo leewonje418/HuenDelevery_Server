@@ -8,6 +8,9 @@ import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
 import UserService from './user.service';
 import Role from '../enum/Role';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
+import io from 'socket.io';
+import { IOSingleton } from '../socket';
+import DeliveryEnum from '../socket/delivery/deliveryEvent';
 
 export default class DeliveryService {
   private readonly userService: UserService;
@@ -64,15 +67,21 @@ export default class DeliveryService {
     const delivery: Delivery = deliveryRepository.create(data);
     delivery.customer = customer;
     delivery.driver = driver;
-    await deliveryRepository.save(delivery);
+    const createdDelivery = await deliveryRepository.save(delivery);
+
+    const namespace = IOSingleton.getInstance().io.of('delivery');
+    namespace.in(`user-${driver.idx}`).emit(DeliveryEnum.CREATE_NEW_DELIVERY, {
+      status: 200,
+      data: {
+        ...createdDelivery,
+      },
+    });
   }
 
   createDeliveries = async (data: CreateDeliveriesRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
 
     const { deliveries } = data;
-
-    const saveDeliveries: Delivery[] = []
 
     for (const delivery of deliveries) {
       const { customerIdx, driverIdx } = delivery;
@@ -81,11 +90,16 @@ export default class DeliveryService {
       const saveDelivery: Delivery = deliveryRepository.create(delivery);
       saveDelivery.customer = customer;
       saveDelivery.driver = driver;
+      const createdDelivery = await deliveryRepository.save(saveDelivery);
 
-      saveDeliveries.push(saveDelivery);
+      const namespace = IOSingleton.getInstance().io.of('delivery');
+      namespace.in(`user-${driver.idx}`).emit(DeliveryEnum.CREATE_NEW_DELIVERY, {
+        status: 200,
+        data: {
+          ...createdDelivery,
+        },
+      });
     }
-
-    await deliveryRepository.save(saveDeliveries);
   }
 
   startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
