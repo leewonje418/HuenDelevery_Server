@@ -11,4 +11,12 @@ export default class DeliveryRepository extends Repository<Delivery> {
             .orderBy('wr_5', 'DESC')
             .getMany();
     }
+
+    findEndTimeIsNull = async (): Promise<Delivery[]> => {
+        return this.createQueryBuilder('delivery')
+            .leftJoinAndSelect('delivery.driver', 'driver')
+            .leftJoinAndSelect('delivery.customer', 'customer')
+            .where('wr_5 is null')
+            .getMany();
+    }
 }

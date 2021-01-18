@@ -32,6 +32,20 @@ export default class DeliveryController {
     }
   }
 
+  getDeliveringDeliveries = async (req: Request, res: Response) => {
+    try {
+      const deliveries = await this.deliveryService.getDeliveringDeliveries();
+
+      res.status(200).json({
+        message: '배송 중 배송 조회 성공',
+        data: {
+          deliveries,
+        },
+      });
+    } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
 
   startDelivery = async (req: Request, res: Response) => {
     try {

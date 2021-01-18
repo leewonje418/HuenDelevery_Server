@@ -20,6 +20,13 @@ export default class DeliveryService {
     return deliveries;
   }
 
+  getDeliveringDeliveries = async (): Promise<Delivery[]> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const deliveries = await deliveryRepository.findEndTimeIsNull();
+
+    return deliveries;
+  }
+
   startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
 
