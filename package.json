@@ -18,6 +18,7 @@
       "axios": "^0.21.1",
       "bcryptjs": "^2.4.3",
       "body-parser": "^1.18.1",
+      "class-transformer": "^0.3.2",
       "class-validator": "^0.12.2",
       "colors": "^1.4.0",
       "cors": "^2.8.5",

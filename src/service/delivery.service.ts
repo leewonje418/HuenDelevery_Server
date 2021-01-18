@@ -7,6 +7,7 @@ import { convertToAddress } from '../thirdParty/google';
 import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
 import UserService from './user.service';
 import Role from '../enum/Role';
+import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
 
 export default class DeliveryService {
   private readonly userService: UserService;
@@ -64,6 +65,27 @@ export default class DeliveryService {
     delivery.customer = customer;
     delivery.driver = driver;
     await deliveryRepository.save(delivery);
+  }
+
+  createDeliveries = async (data: CreateDeliveriesRequest): Promise<void> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+
+    const { deliveries } = data;
+
+    const saveDeliveries: Delivery[] = []
+
+    for (const delivery of deliveries) {
+      const { customerIdx, driverIdx } = delivery;
+      const { customer, driver } = await this.validateUserRole(customerIdx, driverIdx);
+
+      const saveDelivery: Delivery = deliveryRepository.create(delivery);
+      saveDelivery.customer = customer;
+      saveDelivery.driver = driver;
+
+      saveDeliveries.push(saveDelivery);
+    }
+
+    await deliveryRepository.save(saveDeliveries);
   }
 
   startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
