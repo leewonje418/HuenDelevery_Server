@@ -6,6 +6,7 @@ const router: Router = Router();
 
 const deliveryController = new DeliveryController();
 
+router.get('/my', authDriver, deliveryController.getMyDeliveries);
 router.get('/completed', authManager, deliveryController.getCompletedDeliveries);
 router.get('/delivering', authManager, deliveryController.getDeliveringDeliveries);
 router.post('/', authManager, deliveryController.createDeliveries);
