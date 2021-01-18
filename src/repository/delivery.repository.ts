@@ -3,12 +3,20 @@ import { Delivery } from '../entity/delivery';
 
 @EntityRepository(Delivery)
 export default class DeliveryRepository extends Repository<Delivery> {
-    // findByEndtimeAnd = async (id: string, password: string): Promise<Delivery[] | undefined> => {
-    //     return this.find({
-    //         where: {
-    //             id,
-    //             password,
-    //         },
-    //     });
-    // }
+    findByEndTime = async (date: string): Promise<Delivery[]> => {
+        return this.createQueryBuilder('delivery')
+            .leftJoinAndSelect('delivery.driver', 'driver')
+            .leftJoinAndSelect('delivery.customer', 'customer')
+            .where('DATE(wr_5) = :date', { date })
+            .orderBy('wr_5', 'DESC')
+            .getMany();
+    }
+
+    findEndTimeIsNull = async (): Promise<Delivery[]> => {
+        return this.createQueryBuilder('delivery')
+            .leftJoinAndSelect('delivery.driver', 'driver')
+            .leftJoinAndSelect('delivery.customer', 'customer')
+            .where('wr_5 is null')
+            .getMany();
+    }
 }
