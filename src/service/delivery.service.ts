@@ -1,4 +1,4 @@
-import { getCustomRepository } from 'typeorm';
+import { getCustomRepository, getRepository } from 'typeorm';
 import StartDeliveryRequest from '../request/delivery/startDelivery.request';
 import DeliveryRepository from '../repository/delivery.repository';
 import { Delivery } from '../entity/delivery';
@@ -12,6 +12,13 @@ export default class DeliveryService {
 
     return delivery;
   }
+
+  // getDeliverysByDate = async (idx: number): Promise<Delivery | undefined> => {
+  //   const deliveryRepository = getCustomRepository(DeliveryRepository);
+  //   const delivery = await deliveryRepository.findOne(idx);
+
+  //   return delivery;
+  // }
 
   startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
@@ -54,4 +61,10 @@ export default class DeliveryService {
 
     deliveryRepository.save(delivery);
   }
+
+  getDeliverysByDate = async (endTime: Date): Promise<void> => {
+    const deliveryRepository = getRepository(DeliveryRepository);
+    const delivery = await deliveryRepository.find();
+
+  } 
 }
