@@ -22,11 +22,11 @@ export default class DeliveryRepository extends Repository<Delivery> {
     }
 
     findEndTimeIsNullByDriver = async (driver: User): Promise<Delivery[]> => {
-        return this.find({
-            where: {
-                endTime: null,
-                driver,
-            },
-        });
+        return this.createQueryBuilder('delivery')
+            .leftJoinAndSelect('delivery.driver', 'driver')
+            .leftJoinAndSelect('delivery.customer', 'customer')
+            .where('wr_5 is null')
+            .andWhere('fk_driver_idx = :driverIdx', { driverIdx: driver.idx })
+            .getMany();
     }
 }
