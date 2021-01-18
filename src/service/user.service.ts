@@ -7,7 +7,6 @@ import { createToken } from '../lib/token';
 import DeliveryRepository from '../repository/delivery.repository';
 import UserRepository from '../repository/user.repository';
 import LoginRequest from '../request/auth/login.request';
-import DeliveryService from './delivery.service';
 
 export default class UserService {
   login = async (role: Role, loginRequest: LoginRequest): Promise<string> => {
@@ -43,11 +42,11 @@ export default class UserService {
   }
 
   getDrivers = async (): Promise<IDriver[]> => {
+    // 재귀적 호출로 인해 deliveryService를 사용하지 못함
     const deliveryRepository = getCustomRepository(DeliveryRepository);
     const userRepository = getCustomRepository(UserRepository);
 
     const userTypeDrivers = await userRepository.findByRole(Role.DRIVER);
-    // TODO: 드라이버 배송 정보 추가
 
     const drivers: IDriver[] = [];
     for (const userDriver of userTypeDrivers) {
