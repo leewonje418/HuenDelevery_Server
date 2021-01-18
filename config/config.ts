@@ -28,3 +28,7 @@ export const JWT = {
   SECRET: getProcessEnv('JWT_SECRET'),
   EXPIRES_IN: getProcessEnv('JWT_EXPIRES_IN'),
 };
+
+export const GOOGLE = {
+  KEY: getProcessEnv('GOOGLE_KEY'),
+}
