@@ -4,8 +4,10 @@ import Role from '../enum/Role';
 import HttpError from '../error/httpError';
 import { IDriver } from '../interface/user.interface';
 import { createToken } from '../lib/token';
+import DeliveryRepository from '../repository/delivery.repository';
 import UserRepository from '../repository/user.repository';
 import LoginRequest from '../request/auth/login.request';
+import DeliveryService from './delivery.service';
 
 export default class UserService {
   login = async (role: Role, loginRequest: LoginRequest): Promise<string> => {
@@ -41,11 +43,26 @@ export default class UserService {
   }
 
   getDrivers = async (): Promise<IDriver[]> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
     const userRepository = getCustomRepository(UserRepository);
-    const drivers = await userRepository.findByRole(Role.DRIVER);
+
+    const userTypeDrivers = await userRepository.findByRole(Role.DRIVER);
     // TODO: 드라이버 배송 정보 추가
 
-    return drivers as IDriver[];
+    const drivers: IDriver[] = [];
+    for (const userDriver of userTypeDrivers) {
+      const driverUnCompletedDeliveries = await deliveryRepository.findEndTimeIsNullByDriver(userDriver);
+      const isDelivering = driverUnCompletedDeliveries.length <= 0 ? false : true;
+
+      const driver: IDriver = {
+        ...userDriver,
+        isDelivering,
+      };
+
+      drivers.push(driver);
+    }
+
+    return drivers;
   }
 
   getManagers = async (): Promise<User[]> => {

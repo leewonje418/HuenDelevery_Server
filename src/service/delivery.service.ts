@@ -37,6 +37,17 @@ export default class DeliveryService {
     return deliveries;
   }
 
+  isDriverDelivering = async (driverIdx: number): Promise<boolean> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const deliveries = await deliveryRepository.findEndTimeIsNullByDriver(driverIdx);
+
+    if (deliveries.length <= 0) {
+      return false;
+    }
+
+    return true;
+  }
+
   private validateUserRole = async (customerIdx: number, driverIdx: number) => {
     const driver = await this.userService.getUser(driverIdx);
     const customer = await this.userService.getUser(customerIdx);
