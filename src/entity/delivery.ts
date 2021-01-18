@@ -6,7 +6,6 @@ import {
     JoinColumn,
     RelationId,
 } from 'typeorm';
-import { IsNotEmpty } from 'class-validator'
 import User from './user';
 
 @Entity('g5_write_delivery')
@@ -34,7 +33,6 @@ export class Delivery {
     @Column({
         name: 'wr_1',
     })
-    @IsNotEmpty()
     productName!: string;
 
     @Column({
