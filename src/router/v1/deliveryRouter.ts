@@ -9,7 +9,7 @@ const deliveryController = new DeliveryController();
 //router.post('/date/deliverys', deliveryController.getDeliverys);
 //router.post('/date/during', deliveryController);
 //router.post('/date/finish', deliveryController);
-router.post('/delivery/start', authDriver, deliveryController.startDelivery);
-router.post('/delivery/end', authDriver, deliveryController.endDelivery);
+router.post('/start/:deliveryIdx', authDriver, deliveryController.startDelivery);
+router.post('/end/:deliveryIdx', authDriver, deliveryController.endDelivery);
 
 export default router;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { IAuthRequest } from '../interface/request.interface';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
+import StartDeliveryRequest from '../request/delivery/startDelivery.request';
 import DeliveryService from '../service/delivery.service';
 
 export default class DeliveryController {
@@ -14,9 +14,11 @@ export default class DeliveryController {
     try {
       const driverIdx: number = req.user.idx;
       const deliveryIdx: number = Number(req.params.deliveryIdx);
-      const { body } = req;
+      const data = new StartDeliveryRequest(req.body);
 
-      await this.deliveryService.startDelivery(driverIdx, deliveryIdx, body);
+      await data.validate();
+
+      await this.deliveryService.startDelivery(driverIdx, deliveryIdx, data);
 
       res.status(200).json({
         message: '배송 시작 완료',
