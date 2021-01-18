@@ -13,12 +13,12 @@ export default class DeliveryService {
     return delivery;
   }
 
-  // getDeliverysByDate = async (idx: number): Promise<Delivery | undefined> => {
-  //   const deliveryRepository = getCustomRepository(DeliveryRepository);
-  //   const delivery = await deliveryRepository.findOne(idx);
+  getCompletedDeliveriesByDate = async (date: string): Promise<Delivery[]> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const deliveries = await deliveryRepository.findByEndTime(date);
 
-  //   return delivery;
-  // }
+    return deliveries;
+  }
 
   startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
@@ -62,9 +62,4 @@ export default class DeliveryService {
     deliveryRepository.save(delivery);
   }
 
-  getDeliverysByDate = async (endTime: Date): Promise<void> => {
-    const deliveryRepository = getRepository(DeliveryRepository);
-    const delivery = await deliveryRepository.find();
-
-  } 
 }
