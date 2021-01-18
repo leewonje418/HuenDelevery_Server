@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { IAuthRequest } from '../interface/request.interface';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
 import DeliveryService from '../service/delivery.service';
@@ -10,7 +10,7 @@ export default class DeliveryController {
     this.deliveryService = new DeliveryService();
   }
 
-  startDelivery = async (req: IAuthRequest, res: Response) => {
+  startDelivery = async (req: Request, res: Response) => {
     try {
       const driverIdx: number = req.user.idx;
       const deliveryIdx: number = Number(req.params.deliveryIdx);
@@ -26,7 +26,7 @@ export default class DeliveryController {
     }
   }
 
-  endDelivery = async (req: IAuthRequest, res: Response) => {
+  endDelivery = async (req: Request, res: Response) => {
     try {
       const driverIdx: number = req.user.idx;
       const deliveryIdx: number = Number(req.params.deliveryIdx);
