@@ -49,6 +49,22 @@ export default class DeliveryController {
     }
   }
 
+  getMyDeliveries = async (req: Request, res: Response) => {
+    try {
+      const { user } = req;
+      const deliveries = await this.deliveryService.getDriverUncompletedDelivery(user.idx);
+
+      res.status(200).json({
+        message: '배송할 물품 조회 성공',
+        data: {
+          deliveries,
+        },
+      })
+    } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
+
   createDelivery = async (req: Request, res: Response) => {
     try {
       const { body } = req;

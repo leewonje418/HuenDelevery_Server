@@ -40,6 +40,17 @@ export default class DeliveryService {
     return deliveries;
   }
 
+  getDriverUncompletedDelivery = async (driverIdx: number): Promise<Delivery[]> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const driver = await this.userService.getUser(driverIdx);
+    if (driver === undefined) {
+      throw new HttpError(403, '권한 없음');
+    }
+    const deliveries = await deliveryRepository.findEndTimeIsNullByDriver(driver);
+
+    return deliveries;
+  }
+
   private validateUserRole = async (customerIdx: number, driverIdx: number) => {
     const driver = await this.userService.getUser(driverIdx);
     const customer = await this.userService.getUser(customerIdx);
@@ -57,6 +68,7 @@ export default class DeliveryService {
       customer,
     }
   }
+
 
   createDelivery = async (data: CreateDeliveryRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
