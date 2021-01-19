@@ -12,6 +12,7 @@ import io from 'socket.io';
 import { IOSingleton } from '../socket';
 import DeliveryEnum from '../socket/delivery/deliveryEvent';
 import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
+import OrderDeliveryRequest from '../request/delivery/orderDelivery.request';
 
 export default class DeliveryService {
   private readonly userService: UserService;
@@ -150,5 +151,9 @@ export default class DeliveryService {
     delivery.image = data.image;
 
     await deliveryRepository.save(delivery);
+  }
+
+  orderDeliveryRequest = async (driverIdx: number, data: OrderDeliveryRequest) => {
+    const { deliveryIdx } = data;
   }
 }
