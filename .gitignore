@@ -8,3 +8,4 @@ temp/
 ormconfig.json
 src/node_modules
 logs
+public/

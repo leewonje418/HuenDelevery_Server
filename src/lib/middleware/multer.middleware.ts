@@ -8,11 +8,10 @@ const upload = multer({
       cb(null, path.join(__dirname, `../../../public`));
     },
     filename: (_req, file, cb) => {
-      const extName = path.extname(file.originalname)
-      cb(null, `${Date.now()}_${file.filename}${extName}`);
+      cb(null, `${Date.now()}_${file.originalname}`);
     },
   })
-}).array('files');
+}).single('file');
 
 export default (req: Request, res: Response, next: NextFunction) => {
   upload(req, res, (err: any) => {
