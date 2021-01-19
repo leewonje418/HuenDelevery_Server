@@ -1,5 +1,5 @@
 import { getCustomRepository, getRepository } from 'typeorm';
-import StartDeliveryRequest from '../request/delivery/startDelivery.request';
+import StartDeliveryRequest from '../request/delivery/endDeliveryRequest';
 import DeliveryRepository from '../repository/delivery.repository';
 import { Delivery } from '../entity/delivery';
 import HttpError from '../error/httpError';
@@ -11,6 +11,7 @@ import CreateDeliveriesRequest from '../request/delivery/createDeliveries.reques
 import io from 'socket.io';
 import { IOSingleton } from '../socket';
 import DeliveryEnum from '../socket/delivery/deliveryEvent';
+import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
 
 export default class DeliveryService {
   private readonly userService: UserService;
@@ -26,9 +27,9 @@ export default class DeliveryService {
     return delivery;
   }
 
-  getCompletedDeliveriesByDate = async (date: string): Promise<Delivery[]> => {
+  getDeliveriesByDate = async (date: string): Promise<Delivery[]> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
-    const deliveries = await deliveryRepository.findByEndTime(date);
+    const deliveries = await deliveryRepository.findByCreatedAt(date);
 
     return deliveries;
   }
@@ -114,7 +115,10 @@ export default class DeliveryService {
     }
   }
 
-  startDelivery = async (driverIdx: number, deliveryIdx: number, data: StartDeliveryRequest): Promise<void> => {
+  endDelivery = async (
+    driverIdx: number,
+    deliveryIdx: number,
+    data: EndDeliveryRequest): Promise<void> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
 
     const delivery = await this.getDelivery(deliveryIdx);
@@ -123,41 +127,12 @@ export default class DeliveryService {
     }
 
     if (delivery.driverIdx !== driverIdx) {
-      throw new HttpError(403, '권한 없음');
-    }
-
-    if (delivery.startAddress !== null) {
-      throw new HttpError(400, '이미 출발한 배송');
-    }
-
-    const { lat, long } = data;
-    const startAddress = await convertToAddress(lat, long);
-
-    delivery.startTime = new Date();
-    delivery.startAddress = startAddress;
-
-    deliveryRepository.save(delivery);
-  }
-
-  endDelivery = async (driverIdx: number, deliveryIdx: number): Promise<void> => {
-    const deliveryRepository = getCustomRepository(DeliveryRepository);
-
-    const delivery = await this.getDelivery(deliveryIdx);
-    if (delivery === undefined) {
-      throw new HttpError(404, '배송 없음');
-    }
-
-    if (delivery.driverIdx !== driverIdx) {
-      throw new HttpError(403, '권한 없음');
-    }
-
-    if (delivery.startAddress === null) {
-      throw new HttpError(400, '아직 배송이 출발하지 않음');
+      throw new HttpError(403, '본인 배송 아님');
     }
 
     delivery.endTime = new Date();
+    delivery.image = data.image;
 
-    deliveryRepository.save(delivery);
+    await deliveryRepository.save(delivery);
   }
-
 }

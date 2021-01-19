@@ -42,9 +42,23 @@ export class Delivery {
     endOrderNumber!: number | null;
 
     @Column({
+        name: 'wr_3',
+        nullable: true,
+        type: 'varchar',
+    })
+    image!: string | null;
+
+
+    @Column({
+        name: 'wr_4',
+        type: 'datetime'
+    })
+    createdAt: Date = new Date();
+
+    @Column({
         name: 'wr_5',
         nullable: true,
         type: 'datetime'
     })
-    endTime!: Date;
+    endTime!: Date | null;
 }

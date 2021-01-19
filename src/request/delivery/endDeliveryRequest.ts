@@ -1,16 +1,11 @@
 import { IsNumber, validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
-export default class StartDeliveryRequest {
-  @IsNumber()
-  long!: number
+export default class EndDeliveryRequest {
+  image!: string;
 
-  @IsNumber()
-  lat!: number
-
-  constructor(body: StartDeliveryRequest) {
-    this.long = body.long;
-    this.lat = body.lat;
+  constructor(body: EndDeliveryRequest) {
+    this.image = body.image;
   }
 
   async validate(): Promise<void> {
