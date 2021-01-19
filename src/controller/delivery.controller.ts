@@ -4,7 +4,7 @@ import httpErrorHandler from '../lib/handler/httpErrorHandler';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
 import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
 import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
-import StartDeliveryRequest from '../request/delivery/endDeliveryRequest';
+import OrderDeliveryRequest, { OrderDeliveryItem } from '../request/delivery/orderDelivery.request';
 import DeliveryService from '../service/delivery.service';
 
 export default class DeliveryController {
@@ -138,6 +138,30 @@ export default class DeliveryController {
 
       res.status(200).json({
         message: '상품배송이 완료되었습니다.',
+      });
+    } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
+
+  orderDelivery = async (req: Request, res: Response) => {
+    try {
+      const driverIdx: number = req.user.idx;
+      const { body } = req;
+      const data = new OrderDeliveryRequest(body);
+
+      await data.validate();
+
+      const orderDeliveryPromise: Promise<void>[] = [];
+      for (const bodyItem of data.orders) {
+        orderDeliveryPromise.push(new OrderDeliveryItem(bodyItem).validate());
+      }
+      await Promise.all(orderDeliveryPromise);
+
+      await this.deliveryService.orderDeliveryRequest(driverIdx, data);
+
+      res.status(200).json({
+        message: '배송 정렬 성공',
       });
     } catch (err) {
       httpErrorHandler(res, err);
