@@ -12,6 +12,7 @@ router.get('/driver/:idx', authManager, deliveryController.getTodayDeliveryByDri
 router.get('/my', authDriver, deliveryController.getMyDeliveries);
 router.get('/delivering', authManager, deliveryController.getDeliveringDeliveries);
 router.post('/', authManager, deliveryController.createDeliveries);
+router.post('/order', authDriver, deliveryController.orderDelivery);
 router.post('/single', authManager, deliveryController.createDelivery);
 router.post('/end/:deliveryIdx', authDriver, deliveryController.endDelivery);
 
