@@ -38,6 +38,7 @@ export class Delivery {
     @Column({
         name: 'wr_2',
         nullable: true,
+        type: 'int',
     })
     endOrderNumber!: number | null;
 
