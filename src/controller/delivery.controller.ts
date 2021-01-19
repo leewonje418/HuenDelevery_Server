@@ -3,7 +3,8 @@ import HttpError from '../error/httpError';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
 import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
-import StartDeliveryRequest from '../request/delivery/startDelivery.request';
+import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
+import StartDeliveryRequest from '../request/delivery/endDeliveryRequest';
 import DeliveryService from '../service/delivery.service';
 
 export default class DeliveryController {
@@ -13,7 +14,7 @@ export default class DeliveryController {
     this.deliveryService = new DeliveryService();
   }
 
-  getCompletedDeliveries = async (req: Request, res: Response) => {
+  getDeliveriesByDate = async (req: Request, res: Response) => {
     try {
       const { date } = req.query;
       if (typeof date !== 'string' || isNaN(Date.parse(date))) {
@@ -21,10 +22,10 @@ export default class DeliveryController {
       }
 
       const deliveries =
-        await this.deliveryService.getCompletedDeliveriesByDate(date);
+        await this.deliveryService.getDeliveriesByDate(date);
 
       res.status(200).json({
-        message: '완료된 배송 조회 성공',
+        message: '특정 날의 배송 조회 성공',
         data: {
           deliveries,
         },
@@ -106,30 +107,16 @@ export default class DeliveryController {
     }
   }
 
-  startDelivery = async (req: Request, res: Response) => {
-    try {
-      const driverIdx: number = req.user.idx;
-      const deliveryIdx: number = Number(req.params.deliveryIdx);
-      const data = new StartDeliveryRequest(req.body);
-
-      await data.validate();
-
-      await this.deliveryService.startDelivery(driverIdx, deliveryIdx, data);
-
-      res.status(200).json({
-        message: '배송 시작 완료',
-      });
-    } catch (err) {
-      httpErrorHandler(res, err);
-    }
-  }
-
   endDelivery = async (req: Request, res: Response) => {
     try {
       const driverIdx: number = req.user.idx;
       const deliveryIdx: number = Number(req.params.deliveryIdx);
+      const { body } = req;
+      const data = new EndDeliveryRequest(body);
 
-      await this.deliveryService.endDelivery(driverIdx, deliveryIdx);
+      await data.validate();
+
+      await this.deliveryService.endDelivery(driverIdx, deliveryIdx, data);
 
       res.status(200).json({
         message: '상품배송이 완료되었습니다.',

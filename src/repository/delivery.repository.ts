@@ -2,14 +2,17 @@ import { EntityRepository, Repository } from 'typeorm';
 import { Delivery } from '../entity/delivery';
 import User from '../entity/user';
 
+const CREATED_AT_COL = 'wr_4';
+const END_TIME_COL = 'wr_5';
+
 @EntityRepository(Delivery)
 export default class DeliveryRepository extends Repository<Delivery> {
-    findByEndTime = async (date: string): Promise<Delivery[]> => {
+    findByCreatedAt = async (date: string): Promise<Delivery[]> => {
         return this.createQueryBuilder('delivery')
             .leftJoinAndSelect('delivery.driver', 'driver')
             .leftJoinAndSelect('delivery.customer', 'customer')
-            .where('DATE(wr_5) = :date', { date })
-            .orderBy('wr_5', 'DESC')
+            .where(`DATE(${CREATED_AT_COL}) = :date`, { date })
+            .orderBy(`${CREATED_AT_COL}`, 'DESC')
             .getMany();
     }
 
@@ -17,7 +20,7 @@ export default class DeliveryRepository extends Repository<Delivery> {
         return this.createQueryBuilder('delivery')
             .leftJoinAndSelect('delivery.driver', 'driver')
             .leftJoinAndSelect('delivery.customer', 'customer')
-            .where('wr_5 is null')
+            .where(`${END_TIME_COL} is null`)
             .getMany();
     }
 
@@ -25,7 +28,7 @@ export default class DeliveryRepository extends Repository<Delivery> {
         return this.createQueryBuilder('delivery')
             .leftJoinAndSelect('delivery.driver', 'driver')
             .leftJoinAndSelect('delivery.customer', 'customer')
-            .where('wr_5 is null')
+            .where(`${END_TIME_COL} is null`)
             .andWhere('fk_driver_idx = :driverIdx', { driverIdx: driver.idx })
             .getMany();
     }

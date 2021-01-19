@@ -37,29 +37,28 @@ export class Delivery {
 
     @Column({
         name: 'wr_2',
-        type: 'decimal',
         nullable: true,
     })
-    distance!: number | null;
+    endOrderNumber!: number | null;
 
     @Column({
         name: 'wr_3',
         nullable: true,
         type: 'varchar',
     })
-    startAddress!: string | null;
+    image!: string | null;
+
 
     @Column({
         name: 'wr_4',
-        nullable: true,
         type: 'datetime'
     })
-    startTime!: Date;
+    createdAt: Date = new Date();
 
     @Column({
         name: 'wr_5',
         nullable: true,
         type: 'datetime'
     })
-    endTime!: Date;
+    endTime!: Date | null;
 }
