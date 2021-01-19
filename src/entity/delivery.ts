@@ -37,24 +37,9 @@ export class Delivery {
 
     @Column({
         name: 'wr_2',
-        type: 'decimal',
         nullable: true,
     })
-    distance!: number | null;
-
-    @Column({
-        name: 'wr_3',
-        nullable: true,
-        type: 'varchar',
-    })
-    startAddress!: string | null;
-
-    @Column({
-        name: 'wr_4',
-        nullable: true,
-        type: 'datetime'
-    })
-    startTime!: Date;
+    endOrderNumber!: number | null;
 
     @Column({
         name: 'wr_5',
