@@ -45,9 +45,21 @@ export default class DeliveryService {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
     const driver = await this.userService.getUser(driverIdx);
     if (driver === undefined) {
-      throw new HttpError(403, '권한 없음');
+      throw new HttpError(404, '회원 없음');
     }
     const deliveries = await deliveryRepository.findEndTimeIsNullByDriver(driver);
+
+    return deliveries;
+  }
+
+  getTodayDeliveriesByDriver = async (driverIdx: number): Promise<Delivery[]> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const driver = await this.userService.getUser(driverIdx);
+    if (driver === undefined) {
+      throw new HttpError(404, '회원 없음');
+    }
+
+    const deliveries = await deliveryRepository.findByDriverAndCreatedAt(driver, new Date());
 
     return deliveries;
   }
@@ -128,6 +140,10 @@ export default class DeliveryService {
 
     if (delivery.driverIdx !== driverIdx) {
       throw new HttpError(403, '본인 배송 아님');
+    }
+
+    if (delivery.endTime !== null) {
+      throw new HttpError(409, '이미 완료된 배송');
     }
 
     delivery.endTime = new Date();
