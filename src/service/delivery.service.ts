@@ -126,6 +126,10 @@ export default class DeliveryService {
       throw new HttpError(403, '권한 없음');
     }
 
+    if (delivery.startAddress !== null) {
+      throw new HttpError(400, '이미 출발한 배송');
+    }
+
     const { lat, long } = data;
     const startAddress = await convertToAddress(lat, long);
 
