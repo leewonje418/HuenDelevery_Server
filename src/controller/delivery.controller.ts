@@ -66,6 +66,24 @@ export default class DeliveryController {
     }
   }
 
+  getTodayDeliveryByDriver = async (req: Request, res: Response) => {
+    try {
+      // driverIdx
+      const idx: number = Number(req.params.idx);
+
+      const deliveries = await this.deliveryService.getTodayDeliveriesByDriver(idx);
+
+      res.status(200).json({
+        message: '해당 기사의 오늘 배송 조회 성공',
+        data: {
+          deliveries,
+        },
+      });
+    } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
+
   createDelivery = async (req: Request, res: Response) => {
     try {
       const { body } = req;
