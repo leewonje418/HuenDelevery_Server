@@ -158,7 +158,11 @@ export default class DeliveryController {
       }
       await Promise.all(orderDeliveryPromise);
 
-      // TODO: 서비스
+      await this.deliveryService.orderDeliveryRequest(driverIdx, data);
+
+      res.status(200).json({
+        message: '배송 정렬 성공',
+      });
     } catch (err) {
       httpErrorHandler(res, err);
     }

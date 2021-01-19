@@ -1,14 +1,11 @@
-import { getCustomRepository, getRepository } from 'typeorm';
-import StartDeliveryRequest from '../request/delivery/endDeliveryRequest';
+import { getCustomRepository } from 'typeorm';
 import DeliveryRepository from '../repository/delivery.repository';
 import { Delivery } from '../entity/delivery';
 import HttpError from '../error/httpError';
-import { convertToAddress } from '../thirdParty/google';
 import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
 import UserService from './user.service';
 import Role from '../enum/Role';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
-import io from 'socket.io';
 import { IOSingleton } from '../socket';
 import DeliveryEnum from '../socket/delivery/deliveryEvent';
 import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
@@ -154,6 +151,46 @@ export default class DeliveryService {
   }
 
   orderDeliveryRequest = async (driverIdx: number, data: OrderDeliveryRequest) => {
-    const { deliveryIdx } = data;
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+
+    const { orders } = data;
+
+    const orderNumCheckDuplicate: number[] = [];
+    const deliveryCheckDuplicate: number[] = [];
+    for (const order of orders) {
+      if (orderNumCheckDuplicate.includes(order.endOrderNumber)) {
+        throw new HttpError(400, '중복된 순서가 포함되었습니다');
+      }
+
+      if (deliveryCheckDuplicate.includes(order.deliveryIdx)) {
+        throw new HttpError(400, '중복된 배송이 포함되었습니다');
+      }
+
+      orderNumCheckDuplicate.push(order.endOrderNumber);
+      deliveryCheckDuplicate.push(order.deliveryIdx);
+    }
+
+    const deliveries: (Delivery | undefined)[] =
+      await Promise.all(orders.map((order) => {
+        return deliveryRepository.findOne(order.deliveryIdx);
+      }));
+
+    const saveDeliveries = [];
+    for (let i = 0; i < deliveries.length; i += 1) {
+      const delivery = deliveries[i];
+      if (delivery === undefined) {
+        continue;
+      }
+
+      if (delivery.driverIdx !== driverIdx) {
+        throw new HttpError(403, '본인의 배송이 아님');
+      }
+
+      delivery.endOrderNumber = orders[i].endOrderNumber;
+
+      saveDeliveries.push(delivery);
+    }
+
+    await deliveryRepository.save(saveDeliveries);
   }
 }

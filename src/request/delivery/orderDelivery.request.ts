@@ -1,8 +1,11 @@
-import { IsArray, validate } from 'class-validator';
+import { IsArray, IsNumber, validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
 export class OrderDeliveryItem {
+  @IsNumber()
   deliveryIdx: number;
+
+  @IsNumber()
   endOrderNumber: number;
 
   constructor(body: OrderDeliveryItem) {
@@ -11,6 +14,8 @@ export class OrderDeliveryItem {
   }
 
   async validate(): Promise<void> {
+    console.log('pass');
+
     const errors = await validate(this);
 
     if (errors.length > 0) {
