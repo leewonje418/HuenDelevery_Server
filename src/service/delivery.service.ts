@@ -52,14 +52,14 @@ export default class DeliveryService {
     return deliveries;
   }
 
-  getTodayDeliveriesByDriver = async (driverIdx: number): Promise<Delivery[]> => {
+  getTodayCompletedDeliveriesByDriver = async (driverIdx: number): Promise<Delivery[]> => {
     const deliveryRepository = getCustomRepository(DeliveryRepository);
     const driver = await this.userService.getUser(driverIdx);
     if (driver === undefined) {
       throw new HttpError(404, '회원 없음');
     }
 
-    const deliveries = await deliveryRepository.findByDriverAndCreatedAt(driver, new Date());
+    const deliveries = await deliveryRepository.findEndTimeIsNotNullByDriverAndCreatedAt(driver, new Date());
 
     return deliveries;
   }

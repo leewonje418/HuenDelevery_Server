@@ -71,10 +71,26 @@ export default class DeliveryController {
       // driverIdx
       const idx: number = Number(req.params.idx);
 
-      const deliveries = await this.deliveryService.getTodayDeliveriesByDriver(idx);
+      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(idx);
 
       res.status(200).json({
-        message: '해당 기사의 오늘 배송 조회 성공',
+        message: '해당 기사의 오늘 완료 배송 조회 성공',
+        data: {
+          deliveries,
+        },
+      });
+    } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
+
+  getTodayMyCompletedDeliveries = async (req: Request, res: Response) => {
+    try {
+      const { idx } = req.user;
+      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(idx);
+
+      res.status(200).json({
+        message: '본인의 오늘 완료 배송 조회 성공',
         data: {
           deliveries,
         },
