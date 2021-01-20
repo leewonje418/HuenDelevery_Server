@@ -225,6 +225,10 @@ export default class DeliveryService {
         throw new HttpError(403, '본인의 배송이 아님');
       }
 
+      if (delivery.endTime === null) {
+        throw new HttpError(409, '완료되지 않은 배송');
+      }
+
       delivery.endOrderNumber = orders[i].endOrderNumber;
 
       saveDeliveries.push(delivery);
