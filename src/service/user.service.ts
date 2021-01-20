@@ -41,7 +41,14 @@ export default class UserService {
     return customers;
   }
 
-  getDrivers = async (): Promise<IDriver[]> => {
+  getDrivers = async (): Promise<User[]> => {
+    const userRepository = getCustomRepository(UserRepository);
+    const drivers = await userRepository.findByRole(Role.DRIVER);
+
+    return drivers;
+  }
+
+  getDriversWithStatus = async (): Promise<IDriver[]> => {
     // 재귀적 호출로 인해 deliveryService를 사용하지 못함
     const deliveryRepository = getCustomRepository(DeliveryRepository);
     const userRepository = getCustomRepository(UserRepository);
