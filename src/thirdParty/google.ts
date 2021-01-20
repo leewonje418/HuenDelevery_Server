@@ -5,7 +5,7 @@ import { ILatLong } from '../interface/position.interface';
 
 const GOOGLE_END_POINT = 'https://maps.googleapis.com/maps/api/geocode/json';
 
-export const convertToAddress = async (lat: number, long: number): string => {
+export const convertToAddress = async (lat: number, long: number): Promise<string> => {
   const res = await axios.get(GOOGLE_END_POINT, {
     params: {
       latlng: encodeURI(`${lat},${long}`),
