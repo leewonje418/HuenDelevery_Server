@@ -17,15 +17,15 @@ export default class DeliveryRepository extends Repository<Delivery> {
             .getMany();
     }
 
-    findByDriverAndCreatedAt = async (driver: User, date: Date) => {
+    findEndTimeIsNotNullByDriverAndCreatedAt = async (driver: User, date: Date) => {
         return this.createQueryBuilder('delivery')
             .leftJoinAndSelect('delivery.driver', 'driver')
             .leftJoinAndSelect('delivery.customer', 'customer')
             .where(`DATE(${CREATED_AT_COL}) = DATE(:date)`, { date })
             .andWhere(`fk_driver_idx = :driverIdx`, { driverIdx: driver.idx })
+            .andWhere(`${END_TIME_COL} IS NOT NULL`)
             .orderBy(`${END_ORDER_NUM} IS NULL`)
             .addOrderBy(`${END_ORDER_NUM}`, 'ASC')
-            .addOrderBy(`${END_TIME_COL} IS NULL`, 'ASC')
             .addOrderBy(`${END_TIME_COL}`, 'ASC')
             .getMany();
     }
