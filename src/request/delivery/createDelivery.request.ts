@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, validate } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
 export default class CreateDeliveryRequest {
@@ -6,7 +6,8 @@ export default class CreateDeliveryRequest {
   customerIdx!: number;
 
   @IsNumber()
-  driverIdx!: number;
+  @IsOptional()
+  driverIdx?: number;
 
   @IsNotEmpty()
   productName!: string;

@@ -26,7 +26,7 @@ export default class UserController {
 
     getDrivers = async (req: Request, res: Response) => {
         try {
-            const drivers = await this.userService.getDrivers();
+            const drivers = await this.userService.getDriversWithStatus();
 
             res.status(200).json({
                 message: '기사 전체 조회 성공',
