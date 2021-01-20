@@ -134,17 +134,23 @@ export default class DeliveryService {
     const namespace = IOSingleton.getInstance().io.of('delivery');
     namespace.in(`user-${driver.idx}`).emit(DeliveryEnum.CREATE_NEW_DELIVERY, {
       status: 200,
-      data: {
-        ...createdDelivery,
-      },
+      data: [
+        createdDelivery,
+      ],
     });
   }
 
   createDeliveries = async (data: CreateDeliveriesRequest): Promise<void> => {
+    type DriverCreatedDelivery = {
+      driverIdx: number;
+      deliveries: Delivery[];
+    }
+
     const deliveryRepository = getCustomRepository(DeliveryRepository);
 
     const { deliveries } = data;
 
+    const createdDeliveries: DriverCreatedDelivery[] = [];
     for (const delivery of deliveries) {
       const { customerIdx, driverIdx } = delivery;
       const { customer, driver } = await this.arrangeDelivery(customerIdx, driverIdx);
@@ -154,12 +160,27 @@ export default class DeliveryService {
       saveDelivery.driver = driver;
       const createdDelivery = await deliveryRepository.save(saveDelivery);
 
-      const namespace = IOSingleton.getInstance().io.of('delivery');
-      namespace.in(`user-${driver.idx}`).emit(DeliveryEnum.CREATE_NEW_DELIVERY, {
+      // 중복된 배송 기사에게 할당되었을 경우
+      const driverDelivery = createdDeliveries.find(e => e.driverIdx === driver.idx);
+      if (driverDelivery !== undefined) {
+        driverDelivery.deliveries.push(createdDelivery);
+      } else {
+        createdDeliveries.push({
+          driverIdx: driver.idx,
+          deliveries: [
+            createdDelivery,
+          ],
+        });
+      }
+
+    }
+
+    const namespace = IOSingleton.getInstance().io.of('delivery');
+
+    for (const createdDelivery of createdDeliveries) {
+      namespace.in(`user-${createdDelivery.driverIdx}`).emit(DeliveryEnum.CREATE_NEW_DELIVERY, {
         status: 200,
-        data: {
-          ...createdDelivery,
-        },
+        data: createdDelivery.deliveries,
       });
     }
   }
