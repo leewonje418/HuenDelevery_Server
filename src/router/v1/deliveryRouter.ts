@@ -8,8 +8,9 @@ const deliveryController = new DeliveryController();
 
 // 날짜를 통해 조회
 router.get('/', authManager, deliveryController.getDeliveriesByDate);
-router.get('/driver/:idx', authManager, deliveryController.getTodayDeliveryByDriver);
+router.get('/driver/completed/:idx', authManager, deliveryController.getTodayDeliveryByDriver);
 router.get('/my', authDriver, deliveryController.getMyDeliveries);
+router.get('/my/completed', authDriver, deliveryController.getTodayMyCompletedDeliveries);
 router.get('/delivering', authManager, deliveryController.getDeliveringDeliveries);
 router.post('/', authManager, deliveryController.createDeliveries);
 router.post('/order', authDriver, deliveryController.orderDelivery);
