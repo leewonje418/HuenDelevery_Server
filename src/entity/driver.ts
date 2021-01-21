@@ -8,7 +8,7 @@ export default class Driver {
   @Column({
     select: false,
   })
-  pw!: string;
+  password!: string;
 
   @Column()
   name!: string;

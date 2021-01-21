@@ -52,8 +52,8 @@ export default class DeliveryController {
 
   getMyDeliveries = async (req: Request, res: Response) => {
     try {
-      const { user } = req;
-      const deliveries = await this.deliveryService.getDriverUncompletedDelivery(user.idx);
+      const { userId } = req;
+      const deliveries = await this.deliveryService.getDriverUncompletedDelivery(userId);
 
       res.status(200).json({
         message: '배송할 물품 조회 성공',
@@ -68,10 +68,10 @@ export default class DeliveryController {
 
   getTodayDeliveryByDriver = async (req: Request, res: Response) => {
     try {
-      // driverIdx
-      const idx: number = Number(req.params.idx);
+      // driverId
+      const id: string = req.params.id;
 
-      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(idx);
+      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(id);
 
       res.status(200).json({
         message: '해당 기사의 오늘 완료 배송 조회 성공',
@@ -86,8 +86,8 @@ export default class DeliveryController {
 
   getTodayMyCompletedDeliveries = async (req: Request, res: Response) => {
     try {
-      const { idx } = req.user;
-      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(idx);
+      const { userId } = req;
+      const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(userId);
 
       res.status(200).json({
         message: '본인의 오늘 완료 배송 조회 성공',
@@ -143,14 +143,14 @@ export default class DeliveryController {
 
   endDelivery = async (req: Request, res: Response) => {
     try {
-      const driverIdx: number = req.user.idx;
+      const { userId } = req;
       const deliveryIdx: number = Number(req.params.deliveryIdx);
       const { body } = req;
       const data = new EndDeliveryRequest(body);
 
       await data.validate();
 
-      await this.deliveryService.endDelivery(driverIdx, deliveryIdx, data);
+      await this.deliveryService.endDelivery(userId, deliveryIdx, data);
 
       res.status(200).json({
         message: '상품배송이 완료되었습니다.',
@@ -162,7 +162,7 @@ export default class DeliveryController {
 
   orderDelivery = async (req: Request, res: Response) => {
     try {
-      const driverIdx: number = req.user.idx;
+      const { userId } = req;
       const { body } = req;
       const data = new OrderDeliveryRequest(body);
 
@@ -174,7 +174,7 @@ export default class DeliveryController {
       }
       await Promise.all(orderDeliveryPromise);
 
-      await this.deliveryService.orderDeliveryRequest(driverIdx, data);
+      await this.deliveryService.orderDeliveryRequest(userId, data);
 
       res.status(200).json({
         message: '배송 정렬 성공',

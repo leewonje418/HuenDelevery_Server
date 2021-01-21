@@ -1,4 +1,4 @@
-import { Column, ConnectionOptionsReader, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('customer')
 export default class Customer {

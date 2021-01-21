@@ -1,17 +1,21 @@
 import { Request, Response } from 'express';
+import Customer from '../entity/customer';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
-import UserService from '../service/user.service';
+import CustomerService from '../service/customer.service';
+import DriverService from '../service/driver.service';
 
 export default class UserController {
-    private readonly userService: UserService;
+    private readonly driverService: DriverService;
+    private readonly customerService: CustomerService;
 
     constructor() {
-        this.userService = new UserService();
+        this.driverService = new DriverService();
+        this.customerService = new CustomerService();
     }
 
     getCustomers = async (req: Request, res: Response) => {
         try {
-            const customers = await this.userService.getCustomers();
+            const customers = await this.customerService.getCustomers();
 
             res.status(200).json({
                 message: '고객 전체 조회 성공',
@@ -26,7 +30,7 @@ export default class UserController {
 
     getDrivers = async (req: Request, res: Response) => {
         try {
-            const drivers = await this.userService.getDriversWithStatus();
+            const drivers = await this.driverService.getDrivers();
 
             res.status(200).json({
                 message: '기사 전체 조회 성공',

@@ -1,4 +1,5 @@
 import { getCustomRepository } from 'typeorm';
+import Driver from '../entity/driver';
 import HttpError from '../error/httpError';
 import { createToken } from '../lib/token';
 import DriverRepository from '../repository/driver.repository';
@@ -17,5 +18,20 @@ export default class DriverService {
     const token: string = await createToken(driver.id);
 
     return token;
+  }
+
+  getDriver = async (id: string): Promise<Driver | undefined> => {
+    const driverRepository = getCustomRepository(DriverRepository);
+    const driver = driverRepository.findOne(id);
+
+    return driver;
+  }
+
+  getDrivers() {
+    const driverRepository = getCustomRepository(DriverRepository);
+    const drivers = driverRepository.find();
+
+    // TODO: 오늘 얼마나 했는지 표시
+    return drivers;
   }
 }

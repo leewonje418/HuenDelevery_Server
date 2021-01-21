@@ -5,8 +5,8 @@ export default class Manager {
   @PrimaryColumn()
   id!: string;
 
-  @PrimaryColumn()
-  pw!: string;
+  @Column()
+  password!: string;
 
   @Column()
   name!: string;
