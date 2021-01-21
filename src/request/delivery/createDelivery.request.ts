@@ -6,15 +6,14 @@ export default class CreateDeliveryRequest {
   customerIdx!: number;
 
   @IsNumber()
-  @IsOptional()
-  driverIdx?: number;
+  driverId!: string;
 
   @IsNotEmpty()
   productName!: string;
 
   constructor(body: CreateDeliveryRequest) {
     this.customerIdx = body.customerIdx;
-    this.driverIdx = body.driverIdx;
+    this.driverId = body.driverId;
     this.productName = body.productName;
   }
 

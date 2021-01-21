@@ -2,13 +2,17 @@ import { Request, Response } from 'express';
 import Role from '../enum/Role';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
 import LoginRequest from '../request/auth/login.request';
-import UserService from '../service/user.service';
+import CustomerService from '../service/customer.service';
+import DriverService from '../service/driver.service';
+import ManagerService from '../service/manager.service';
 
 export default class AuthController {
-  private readonly userService: UserService;
+  private readonly driverService: DriverService;
+  private readonly managerService: ManagerService;
 
   constructor() {
-    this.userService = new UserService();
+    this.driverService = new DriverService();
+    this.managerService = new ManagerService();
   }
 
   managerLogin = async (req: Request, res: Response) => {
@@ -16,7 +20,7 @@ export default class AuthController {
       const loginRequest = new LoginRequest(req.body);
       await loginRequest.validate();
 
-      const token = await this.userService.login(Role.MANAGER, loginRequest);
+      const token = await this.managerService.login(loginRequest);
 
       res.status(200).json({
         message: '로그인 성공',
@@ -35,7 +39,7 @@ export default class AuthController {
 
       await loginRequest.validate();
 
-      const token = await this.userService.login(Role.DRIVER, loginRequest);
+      const token = await this.driverService.login(loginRequest);
 
       res.status(200).json({
         message: '로그인 성공',

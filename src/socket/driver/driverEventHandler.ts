@@ -1,9 +1,10 @@
-import { IsDecimal, IsNumber, validate } from 'class-validator';
+import { IsNumber, validate } from 'class-validator';
 import { IAuthSocket } from '../../interface/request.interface';
 import SocketError from '../../error/socketError';
 import socketErrorHandler from '../../lib/handler/socketErrorHandler';
-import UserService from '../../service/user.service';
 import DriverEvent from './driverEvent';
+import DriverService from '../../service/driver.service';
+import ManagerService from '../../service/manager.service';
 
 class SendDriverLocation {
   @IsNumber()
@@ -29,29 +30,29 @@ class SendDriverLocation {
 }
 
 export default class DriverEventHandler {
-  private readonly userService: UserService;
+  private readonly managerService: ManagerService;
 
   constructor() {
-    this.userService = new UserService();
+    this.managerService = new ManagerService();
   }
 
   sendDriverLocation = async (socket: IAuthSocket, body: any) => {
     try {
-      const { userIdx } = socket;
+      const { userId } = socket;
 
       const data = new SendDriverLocation(body);
       await data.validate();
 
       const { lat, long } = data;
 
-      const managers = await this.userService.getManagers();
+      const managers = await this.managerService.getManagers();
       for (const manager of managers) {
-        console.log(manager.idx);
+        console.log(manager.id);
 
-        socket.in(`user-${manager.idx}`).emit(DriverEvent.READ_DRIVER_LOCATION, {
+        socket.in(`user-${manager.id}`).emit(DriverEvent.READ_DRIVER_LOCATION, {
           status: 200,
           data: {
-            driverIdx: userIdx,
+            driverId: userId,
             lat,
             long,
           },

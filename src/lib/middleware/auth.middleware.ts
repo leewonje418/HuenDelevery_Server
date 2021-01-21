@@ -1,50 +1,45 @@
 import { NextFunction, Request, Response } from 'express'
-import User from '../../entity/user';
 import Role from '../../enum/Role';
 import HttpError from '../../error/httpError';
-import UserService from '../../service/user.service';
+import DriverService from '../../service/driver.service';
+import ManagerService from '../../service/manager.service';
 import httpErrorHandler from '../handler/httpErrorHandler';
 import { verifyToken } from '../token';
 
 export const authManager = async (req: Request, res: Response, next: NextFunction) => {
-  const user = await validateToken(req, res);
-  if (user === undefined) {
-    return;
-  }
+  const userId: string = await validateToken(req, res) as string;
+  const managerService = new ManagerService();
+  const manager = await managerService.getManager(userId);
 
-  if (user.role !== Role.MANAGER) {
+  if (manager === undefined) {
     res.status(403).json({
-      message: '권한 없음',
+      message: '기사 없음',
     });
-
     return;
   }
 
-  req.user = user;
+  req.userId = userId;
   next();
 }
 
 export const authDriver = async (req: Request, res: Response, next: NextFunction) => {
-  const user = await validateToken(req, res);
-  if (user === undefined) {
-    return;
-  }
+  const userId: string = await validateToken(req, res) as string;
+  const driverService = new DriverService();
+  const driver = await driverService.getDriver(userId);
 
-  if (user.role !== Role.DRIVER) {
+  if (driver === undefined) {
     res.status(403).json({
-      message: '권한 없음',
+      message: '기사 없음',
     });
-
     return;
   }
 
-  req.user = user;
+  req.userId = userId;
   next();
 }
 
-const validateToken = async (req: Request, res: Response): Promise<User | undefined> => {
+const validateToken = async (req: Request, res: Response): Promise<string | undefined> => {
   const token = req.headers['x-access-token'];
-  const userService = new UserService();
 
   try {
     if (token === undefined) {
@@ -56,12 +51,8 @@ const validateToken = async (req: Request, res: Response): Promise<User | undefi
     }
 
     const decoded = await verifyToken(token);
-    const user = await userService.getUser(decoded['idx']);
-    if (user === undefined) {
-      throw new Error('no user');
-    }
 
-    return user;
+    return decoded.id;
   } catch (err) {
 
     let code;

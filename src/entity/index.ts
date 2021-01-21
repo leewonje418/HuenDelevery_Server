@@ -1,9 +1,13 @@
-import User from './user';
-import { Delivery } from './delivery';
+import Customer from './customer';
+import Driver from './driver';
+import Manager from './manager';
+import Delivery from './delivery';
 
 const entities = [
-  User,
-  Delivery
+  Driver,
+  Customer,
+  Manager,
+  Delivery,
 ];
 
 export default entities;
