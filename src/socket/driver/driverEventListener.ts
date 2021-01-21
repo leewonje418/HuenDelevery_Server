@@ -15,11 +15,11 @@ export default class DriverEventListener {
 
     try {
       const decoded = await verifyToken(token);
-      const idx: number = decoded['idx'];
+      const id: string = decoded['id'];
 
-      socket.userIdx = idx;
+      socket.userId = id;
 
-      socket.join(`user-${idx}`);
+      socket.join(`user-${id}`);
 
       socket.on(DriverEvent.SEND_DRIVER_LOCATION,
         (body) => this.driverEventHandler.sendDriverLocation(socket, body));

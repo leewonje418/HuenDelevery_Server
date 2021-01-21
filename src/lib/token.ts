@@ -2,9 +2,9 @@ import { SignOptions } from 'jsonwebtoken'
 import * as jwt from 'jsonwebtoken'
 import { JWT } from '../../config/config';
 
-export const createToken = async (idx: number): Promise<string> => {
+export const createToken = async (id: string): Promise<string> => {
   const payload = {
-    idx,
+    id,
   };
 
   const options: SignOptions = {

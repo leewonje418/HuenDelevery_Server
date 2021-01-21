@@ -1,5 +1,5 @@
-import User from '../entity/user';
+// import User from '../entity/user';
 
-export interface IDriver extends User {
-  isDelivering: boolean;
-}
+// export interface IDriver extends User {
+//   isDelivering: boolean;
+// }
