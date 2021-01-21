@@ -5,7 +5,7 @@ import HttpError from '../error/httpError';
 import { IDriver } from '../interface/user.interface';
 import { createToken } from '../lib/token';
 import DeliveryRepository from '../repository/delivery.repository';
-import UserRepository from '../repository/user.repository';
+import UserRepository from '../repository/driver.repository';
 import LoginRequest from '../request/auth/login.request';
 
 export default class UserService {

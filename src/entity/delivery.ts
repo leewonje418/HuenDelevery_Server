@@ -6,10 +6,11 @@ import {
     JoinColumn,
     RelationId,
 } from 'typeorm';
-import User from './user';
+import Customer from './customer';
+import Driver from './driver';
 
 @Entity('g5_write_delivery')
-export class Delivery {
+export default class Delivery {
     @Column({
         name: 'wr_id'
     })
@@ -19,16 +20,16 @@ export class Delivery {
     @RelationId((delivery: Delivery) => delivery.customer)
     customerIdx!: number;
 
-    @ManyToOne(type => User, { onDelete: 'CASCADE' })
+    @ManyToOne(type => Customer, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'fk_customer_idx' })
-    customer!: User;
+    customer!: Customer;
 
     @RelationId((delivery: Delivery) => delivery.driver)
-    driverIdx!: number | null;
+    driverId!: string | null;
 
-    @ManyToOne(type => User, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'fk_driver_idx' })
-    driver!: User | null;
+    @ManyToOne(type => Driver, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'fk_driver_id' })
+    driver!: Driver | null;
 
     @Column({
         name: 'wr_1',
