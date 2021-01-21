@@ -22,7 +22,7 @@ export default class Driver {
   truckNumber!: string;
 
   @Column({
-    name: 'truck_size'
+    type: 'double precision',
   })
   truckSize!: number;
 }
