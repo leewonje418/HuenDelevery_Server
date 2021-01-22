@@ -8,11 +8,26 @@ const END_TIME_COL = 'wr_5';
 
 @EntityRepository(Delivery)
 export default class DeliveryRepository extends Repository<Delivery> {
+    countByDriverAndDate = (driver: Driver, date: Date): Promise<number> => {
+        return this.createQueryBuilder()
+            .where(`DATE(${CREATED_AT_COL}) = DATE(:date)`, { date })
+            .andWhere(`fk_driver_id = :driverId`, { driverId: driver.id })
+            .getCount();
+    }
+
+    countEndTimeIsNotNullByDriverAndDate = (driver: Driver, date: Date): Promise<number> => {
+        return this.createQueryBuilder()
+            .where(`DATE(${CREATED_AT_COL}) = DATE(:date)`, { date })
+            .andWhere(`fk_driver_id = :driverId`, { driverId: driver.id })
+            .andWhere(`${END_TIME_COL} IS NOT NULL`)
+            .getCount();
+    }
+
     findByCreatedAt = async (date: string): Promise<Delivery[]> => {
         return this.createQueryBuilder('delivery')
             .leftJoinAndSelect('delivery.driver', 'driver')
             .leftJoinAndSelect('delivery.customer', 'customer')
-            .where(`DATE(${CREATED_AT_COL}) = :date`, { date })
+            .where(`DATE(${CREATED_AT_COL}) = DATE(:date)`, { date })
             .orderBy(`${CREATED_AT_COL}`, 'DESC')
             .getMany();
     }

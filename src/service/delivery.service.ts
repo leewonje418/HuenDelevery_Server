@@ -11,6 +11,7 @@ import OrderDeliveryRequest from '../request/delivery/orderDelivery.request';
 import CustomerService from './customer.service';
 import DriverService from './driver.service';
 import { getDistance } from '../thirdParty/bing';
+import Driver from '../entity/driver';
 
 export default class DeliveryService {
   private readonly driverService: DriverService;

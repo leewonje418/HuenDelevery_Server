@@ -1,5 +1,6 @@
-// import User from '../entity/user';
+import Driver from '../entity/driver';
 
-// export interface IDriver extends User {
-//   isDelivering: boolean;
-// }
+export interface IDriver extends Driver {
+  totalCount: number;
+  completedCount: number;
+}
