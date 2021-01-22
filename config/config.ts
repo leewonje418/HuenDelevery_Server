@@ -32,3 +32,7 @@ export const JWT = {
 export const GOOGLE = {
   KEY: getProcessEnv('GOOGLE_KEY'),
 }
+
+export const BING = {
+  KEY: getProcessEnv('BING_KEY'),
+}
