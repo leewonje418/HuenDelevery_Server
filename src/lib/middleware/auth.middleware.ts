@@ -13,7 +13,7 @@ export const authManager = async (req: Request, res: Response, next: NextFunctio
 
   if (manager === undefined) {
     res.status(403).json({
-      message: '기사 없음',
+      message: '관리자 없음',
     });
     return;
   }
