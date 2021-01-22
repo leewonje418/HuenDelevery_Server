@@ -13,9 +13,5 @@ export const getDistance = async (wp1: string, wp2: string) => {
     },
   });
 
-  try {
-    return res.data['resourceSets'][0]['resources'][0]['travelDistance'];
-  } catch (err) {
-    throw new HttpError(400, '변환할 수 없는 주소');
-  }
+  return res.data['resourceSets'][0]['resources'][0]['travelDistance'];
 }

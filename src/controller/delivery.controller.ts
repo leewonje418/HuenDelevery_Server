@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ReplSet } from 'typeorm';
 import HttpError from '../error/httpError';
 import httpErrorHandler from '../lib/handler/httpErrorHandler';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
@@ -69,7 +70,7 @@ export default class DeliveryController {
   getTodayDeliveryByDriver = async (req: Request, res: Response) => {
     try {
       // driverId
-      const id: string = req.params.id;
+      const { id } = req.params;
 
       const deliveries = await this.deliveryService.getTodayCompletedDeliveriesByDriver(id);
 
@@ -96,6 +97,24 @@ export default class DeliveryController {
         },
       });
     } catch (err) {
+      httpErrorHandler(res, err);
+    }
+  }
+
+  getDriverTodayDriveDistance = async (req: Request, res: Response) => {
+    try {
+      // driverId
+      const { id } = req.params;
+      const distance: number = await this.deliveryService.getTodayDriveDistanceByDriver(id)
+
+      res.status(200).json({
+        message: '해당 기사의 오늘 주행거리 조회 성공',
+        data: {
+          distance,
+        },
+      });
+    } catch (err) {
+      console.log(err);
       httpErrorHandler(res, err);
     }
   }
