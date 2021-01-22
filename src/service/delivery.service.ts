@@ -3,17 +3,14 @@ import DeliveryRepository from '../repository/delivery.repository';
 import Delivery from '../entity/delivery';
 import HttpError from '../error/httpError';
 import CreateDeliveryRequest from '../request/delivery/createDelivery.request';
-import Role from '../enum/Role';
 import CreateDeliveriesRequest from '../request/delivery/createDeliveries.request';
 import { IOSingleton } from '../socket';
 import DeliveryEnum from '../socket/delivery/deliveryEvent';
 import EndDeliveryRequest from '../request/delivery/endDeliveryRequest';
 import OrderDeliveryRequest from '../request/delivery/orderDelivery.request';
-import { convertToPosition } from '../thirdParty/google';
 import CustomerService from './customer.service';
 import DriverService from './driver.service';
-import Driver from '../entity/driver';
-import Customer from '../entity/customer';
+import { getDistance } from '../thirdParty/bing';
 
 export default class DeliveryService {
   private readonly driverService: DriverService;
@@ -67,6 +64,35 @@ export default class DeliveryService {
     const deliveries = await deliveryRepository.findEndTimeIsNotNullByDriverAndCreatedAt(driver, new Date());
 
     return deliveries;
+  }
+
+  getTodayDriveDistanceByDriver = async (id: string): Promise<number> => {
+    const deliveries: Delivery[] = await this.getTodayCompletedDeliveriesByDriver(id);
+
+    // TODO: 물류 센터 지정
+    const centerAddress = '서울특별시 금천구 가산동 371-28';
+
+    const distancePromise: Promise<number>[] = [];
+    for (var i = 0; i < deliveries.length; i += 1) {
+      if (i === 0) {
+        distancePromise.push(getDistance(centerAddress, deliveries[i].customer.address));
+      } else {
+        const start = deliveries[i - 1].customer.address;
+        const end = deliveries[i].customer.address;
+        distancePromise.push(getDistance(start, end));
+      }
+    }
+
+    try {
+      const distances: number[] = await Promise.all(distancePromise);
+      if (distances.length <= 0) {
+        return 0;
+      }
+
+      return distances.reduce((pre, curr) => pre + curr);
+    } catch (err) {
+      throw new HttpError(400, '변환할 수 없는 주소');
+    }
   }
 
   createDelivery = async (data: CreateDeliveryRequest): Promise<void> => {
