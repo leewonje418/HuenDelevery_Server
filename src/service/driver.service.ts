@@ -1,7 +1,9 @@
 import { getCustomRepository } from 'typeorm';
 import Driver from '../entity/driver';
 import HttpError from '../error/httpError';
+import { IDriver } from '../interface/user.interface';
 import { createToken } from '../lib/token';
+import DeliveryRepository from '../repository/delivery.repository';
 import DriverRepository from '../repository/driver.repository';
 import LoginRequest from '../request/auth/login.request';
 
@@ -22,16 +24,44 @@ export default class DriverService {
 
   getDriver = async (id: string): Promise<Driver | undefined> => {
     const driverRepository = getCustomRepository(DriverRepository);
-    const driver = driverRepository.findOne(id);
+    const driver = await driverRepository.findOne(id);
 
     return driver;
   }
 
-  getDrivers() {
+  getDrivers = async (): Promise<IDriver[]> => {
     const driverRepository = getCustomRepository(DriverRepository);
-    const drivers = driverRepository.find();
+    const rawDrivers = await driverRepository.find();
 
-    // TODO: 오늘 얼마나 했는지 표시
+    const drivers: IDriver[] = [];
+
+    for (const rawDriver of rawDrivers) {
+      const totalCount = await this.countDriverTodayDeliveries(rawDriver);
+      const completedCount = await this.countDriverTodayCompletedDeliveries(rawDriver);
+
+      const driver: IDriver = {
+        ...rawDriver,
+        totalCount,
+        completedCount,
+      }
+
+      drivers.push(driver);
+    }
+
     return drivers;
+  }
+
+  countDriverTodayDeliveries = async (driver: Driver): Promise<number> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const count = await deliveryRepository.countByDriverAndDate(driver, new Date());
+
+    return count;
+  }
+
+  countDriverTodayCompletedDeliveries = async (driver: Driver): Promise<number> => {
+    const deliveryRepository = getCustomRepository(DeliveryRepository);
+    const count = await deliveryRepository.countEndTimeIsNotNullByDriverAndDate(driver, new Date());
+
+    return count;
   }
 }
