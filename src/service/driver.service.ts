@@ -29,6 +29,13 @@ export default class DriverService {
     return driver;
   }
 
+  getRawDrivers = async (): Promise<Driver[]> => {
+    const driverRepository = getCustomRepository(DriverRepository);
+    const rawDrivers = await driverRepository.find();
+
+    return rawDrivers;
+  }
+
   getDrivers = async (): Promise<IDriver[]> => {
     const driverRepository = getCustomRepository(DriverRepository);
     const rawDrivers = await driverRepository.find();

@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, validate } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
 export default class CreateDeliveryRequest {

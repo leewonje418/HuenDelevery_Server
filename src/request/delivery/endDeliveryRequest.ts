@@ -1,4 +1,4 @@
-import { IsNumber, validate } from 'class-validator';
+import { validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
 export default class EndDeliveryRequest {
