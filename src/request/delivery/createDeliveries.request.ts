@@ -1,5 +1,4 @@
-import { IsArray, IsObject, validate, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsArray, validate } from 'class-validator';
 import CreateDeliveryRequest from './createDelivery.request';
 import HttpError from '../../error/httpError';
 
