@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, validate } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, validate } from 'class-validator';
 import HttpError from '../../error/httpError';
 
 export default class CreateDeliveryRequest {
@@ -11,10 +11,15 @@ export default class CreateDeliveryRequest {
   @IsNotEmpty()
   productName!: string;
 
+  @IsString()
+  @IsOptional()
+  createdAt?: string;
+
   constructor(body: CreateDeliveryRequest) {
     this.customerIdx = body.customerIdx;
     this.driverId = body.driverId;
     this.productName = body.productName;
+    this.createdAt = body.createdAt;
   }
 
   async validate(): Promise<void> {
